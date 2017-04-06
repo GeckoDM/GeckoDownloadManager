@@ -1,4 +1,7 @@
 # Gecko420
+<div>
+	<img src="/images/qtpi.png" >
+</div>
 Make Echo360 great again
 
 ## Objective
