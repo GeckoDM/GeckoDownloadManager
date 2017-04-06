@@ -1,6 +1,6 @@
 # Gecko420
 <div>
-	<img src="/images/qtpi.png" >
+	<img src="/images/qtpi.png" width="100" >
 </div>
 Make Echo360 great again
 
