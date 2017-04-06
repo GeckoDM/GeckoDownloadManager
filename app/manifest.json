@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+
+  "name": "eEcho360 Download Manager",
+  "description": "Lets you download files from echo360.",
+  "version": "0.0.1",
+  "icons": { "16": "drawables/launcher/icon16.png",
+           "48": "drawables/launcher/icon48.png",
+          "128": "drawables/launcher/icon128.png" },
+  "browser_action": {
+    "default_popup": "src/popup.html"
+  },
+  "permissions": [
+	  "webRequest",
+	  "*://echo360.org.au/section/",
+	  "downloads"
+  ]
+}
