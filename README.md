@@ -8,7 +8,7 @@ Make Echo360 great again
 
 Make a chrome extension that allows students to download all their lectures (that they probably won't watch anyway) with the click of a single button.
 
-# TODO
+## TODO
 - [x] Figure out how to download stuff
 - [ ] Handle download limits i.e. Can only download 6 files at a time.
 - [ ] GUI
