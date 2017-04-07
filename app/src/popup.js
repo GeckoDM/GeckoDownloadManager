@@ -89,6 +89,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }, false);
 
+  /*
+  chrome.tabs.getCurrent(function(tab){
+        console.log(tab.url);
+        if(/^https?:\/\/([a-zA-Z\d-]+\.){0,}echo360\.org.au$/.test(tab.url)){
+          $("#main").css("visibility", "visible")
+          $("#warning").css("visibility", "visible")
+        } else {
+          $("#main").css("visibility", "visible")
+          $("#warning").css("visibility", "visible")
+        }
+    }
+  );
+  */
 
   // add download button onclick
   var downloadButton = document.getElementById('download');
