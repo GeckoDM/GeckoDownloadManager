@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <title>MULO Lecture Downloader</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+      body {
+        padding-bottom: 20px;
+        width: 400px;
+      }
+      button {
+        width: 100%;
+        padding: 8px 0;
+        border: none
+      }
+      .btn-primary[disabled] {
+        background-color: #cccccc;
+      }
+      .btn-primary[disabled]:hover {
+        background-color: #cccccc;
+      }
+      .form-group {
+        margin: 8px 0;
+      }
+      #lectureSelect {
+        height: 200px;
+      }
+      .span {
+        float: right;
+      }
+    </style>
+    <script src="popup.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <h2 class="text-center">MULO Lecture Downloader</h2>
+      <div class="checkbox">
+        <label><input id="downloadHD" type="checkbox" value="">Download in HD?</label>
+      </div>
+      <button class="btn-primary" id="load">Load lectures on page</button>
+      <div class="form-group">
+        Select lectures to download <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Hold ctrl or shift (or drag with the mouse) to select more than one!"></span>
+        <select multiple class="form-control" id="lectureSelect">
+        </select>
+      </div>
+
+      <button class="btn-primary" id="download">Download</button>
+    </div>
+
+    <script>
+      $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+  </body>
+</html>
