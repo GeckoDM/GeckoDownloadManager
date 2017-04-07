@@ -7,31 +7,33 @@
 <html>
   <head>
     <title>Getting Started Extension's Popup</title>
-    <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-      }
-      #status {
-        /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
-      }
-    </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     -->
-    <script src="popup.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="popup.js"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <div id="status"></div>
-    <img id="image-result" hidden>
+    <div class="container-fluid">
+      <h2 class="text-center">MULO Lecture Downloader</h2>
+      <div class="checkbox">
+        <label><input id="downloadHD" type="checkbox" value="">Download in HD?</label>
+      </div>
+      <button class="btn-primary" id="load">Load lectures on page</button>
+      <div class="form-group">
+        Select lectures to download <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Hold ctrl or shift (or drag with the mouse) to select more than one!"></span>
+        <select multiple class="form-control" id="lectureSelect">
+        </select>
+      </div>
+
+      <button class="btn-primary" id="download">Download</button>
+    </div>
+
+    <script>
+      $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
   </body>
 </html>
 

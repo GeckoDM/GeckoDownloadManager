@@ -1,59 +1,128 @@
-// Copyright (c) 2014 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+let mediaLessons = undefined;
+const shouldDownload = true;
+let downloadHD = false;
+let downloadables = [];
+let filtered = [];
 
-/**
- * Get the current URL.
- *
- * @param {function(string)} callback - called when the URL of the current tab
- *   is found.
- */
-var rawr = false;
-chrome.webRequest.onBeforeSendHeaders.addListener(
-	function(details) {
-		if (rawr) {
-			console.log("RAwr");
-			return;
-		}
-		rawr = true;
-		var media_lessons_request = new XMLHttpRequest();
-		media_lessons_request.addEventListener("load", function(event){
-				var lessons = JSON.parse(media_lessons_request.responseText);
-				lessons.data.forEach(function(dataItem) {
-					dataItem.lessons.forEach(function(lesson) {
-						try {
-							console.log(lesson);
-							var media = lesson.video.media;
-							var primaryFiles = media.media.current.primaryFiles;
-							primaryFiles.forEach(function(primary_file, file_index) {
-								var download_url = primary_file.s3Url;
-								var file_name = media.name;
-								if(primaryFiles.length > 1) {
-									file_name += "_" + (file_index + 1);
-								}
-								file_name = file_name.replace(/[^a-z0-9]/gi, '_').toLowerCase()
-								chrome.downloads.download({
-									url: download_url
-								}, function(download_response) {
-									console.log("Finished download");
-									console.log(download_response);
-								});
-								console.log("Donwloading: " + file_name);
-							});
-						} catch(ex) {
-							console.log("Failed to download primary files");
-							console.log(ex.stack);
-						}
-					});
-				});
-				//console.log(lessons);
-		});
-		media_lessons_request.open(details.method, details.url);
-		media_lessons_request.withCredentials = true;
-		media_lessons_request.send();
-	},
-	{
-		urls: ["*://echo360.org.au/section/*/media_lessons"]
-	},
-	["requestHeaders"]
-);
+function canDownload(lesson) {
+  return lesson.isFuture !== true;
+}
+
+function getVideoFileName(lesson) {
+  const {createdAt} = lesson.lesson;
+  const quality = (downloadHD) ? "_HD" : "_SD";
+  return createdAt.slice(0, createdAt.indexOf("T")) + quality + ".mp4";
+}
+
+function getUnitCode(lesson) {
+  const lectureName = lesson.lesson.name;
+  return lectureName.slice(0, lectureName.indexOf("/"));
+}
+
+function getDownloadLink(lesson) {
+  const {primaryFiles} = lesson.video.media.media.current;
+  if (downloadHD) {
+    const {s3Url, width, height} = primaryFiles[1];
+    return "https://echo360.org.au/media/download?s3Url=" + s3Url + "&fileName=hd1.mp4&resolution=" + width.toString() + "x" + height.toString();
+  } else {
+    const {s3Url, width, height} = primaryFiles[0];
+    return "https://echo360.org.au/media/download?s3Url=" + s3Url + "&fileName=sd1.mp4&resolution=" + width.toString() + "x" + height.toString();
+  }
+}
+
+// job of this function is to listen init mediaLessons once per click.
+function webRequestOnComplete(xhrRequest) {
+  console.log("Media Lessons obtained!");
+
+  if (mediaLessons === undefined) {
+    mediaLessons = xhrRequest;
+    // now perform the request again ourselves and download files
+    var getMediaLessonsRequest = new Request(mediaLessons.url, {method: 'GET'});
+    fetch(
+      getMediaLessonsRequest,
+      {
+        method: 'GET',
+            credentials: 'include'
+      })
+      .then((getMediaLessonsResponse) => getMediaLessonsResponse.json())
+      .then((getMediaLessonsJson) => {
+        console.log(getMediaLessonsJson);
+        getMediaLessonsJson.data.forEach((dataItem) => {
+          var lessons = dataItem.lessons;
+          downloadables = lessons.filter((lesson) => {
+            return canDownload(lesson);
+          });
+          downloadables.sort((a, b) => {
+            const nameA = getVideoFileName(a), nameB = getVideoFileName(b);
+            if (nameA < nameB) return -1;
+            else if (nameA == nameB) return 0;
+            else return 1;
+          });
+
+          const lectureSelect = document.getElementById("lectureSelect");
+          downloadables.forEach((downloadable) => {
+            const option = document.createElement("option");
+            option.defaultSelected = true;
+            const name = getVideoFileName(downloadable);
+
+            option.innerHTML = name;
+            lectureSelect.appendChild(option);
+          });
+
+          var downloadButton = document.getElementById('download');
+        });
+        downloadButton.disabled = false;
+      });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // add load button onclick
+  var loadButton = document.getElementById('load');
+  loadButton.addEventListener('click', function () {
+    downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
+    chrome.webRequest.onCompleted.addListener(webRequestOnComplete, {urls: ["*://echo360.org.au/*/media_lessons"]});
+
+    chrome.tabs.getSelected(null, function (tab) {
+      var code = 'window.location.reload();';
+      chrome.tabs.executeScript(tab.id, {code: code});
+    });
+  }, false);
+
+
+  // add download button onclick
+  var downloadButton = document.getElementById('download');
+  downloadButton.disabled = true;
+  downloadButton.addEventListener('click', function () {
+    downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
+
+
+    const lectureSelect = document.getElementById("lectureSelect");
+    const options = lectureSelect.options;
+
+    let selected = [];
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected)
+        selected.push(options[i].innerHTML);
+    }
+
+    const toDownload = downloadables.filter((downloadable) => {
+      return selected.indexOf(getVideoFileName(downloadable)) != -1;
+    });
+
+    toDownload.forEach((downloadable) => {
+      console.log(getDownloadLink(downloadable));
+      console.log(getVideoFileName(downloadable));
+      if (shouldDownload) {
+        console.log("Downloading");
+        chrome.downloads.download({
+          url: getDownloadLink(downloadable),
+          filename: "MULO Lectures/" + getUnitCode(downloadable) + "/" + getVideoFileName(downloadable)
+        });
+      }
+    });
+    downloadButton.disabled = true;
+    mediaLessons = undefined;
+  }, false);
+
+}, false);
