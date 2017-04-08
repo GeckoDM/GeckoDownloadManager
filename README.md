@@ -9,7 +9,7 @@ Make Echo360 great again
 Make a chrome extension that allows students to download all their lectures (that they probably won't watch anyway) with the click of a single button.
 
 ## Screenshots
-<img src="/callistus_implementation/screenshots/screenshot1.png" width="480" >
+<img src="/screenshots/screenshot1.png" width="480" >
 
 ## TODO
 - [x] Figure out how to download stuff
