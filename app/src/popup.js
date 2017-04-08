@@ -70,8 +70,8 @@ function webRequestOnComplete(xhrRequest) {
           });
 
           var downloadButton = document.getElementById('download');
+          downloadButton.disabled = false;
         });
-        downloadButton.disabled = false;
       });
   }
 }
@@ -116,12 +116,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let selected = [];
     for (let i = 0; i < options.length; i++) {
       if (options[i].selected)
-        selected.push(options[i].innerHTML);
+        selected.push(i);
     }
 
-    const toDownload = downloadables.filter((downloadable) => {
-      return selected.indexOf(getVideoFileName(downloadable)) != -1;
-    });
+    // using index as unique ID, since dates are not unique
+    let toDownload = [];
+    for (let i = 0; i < downloadables.length; i++) {
+      if (selected.indexOf(i) != -1)
+        toDownload.push(downloadables[i]);
+    }
 
     toDownload.forEach((downloadable) => {
       console.log(getDownloadLink(downloadable));
