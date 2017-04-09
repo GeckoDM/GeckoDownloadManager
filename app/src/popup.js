@@ -9,9 +9,9 @@ function canDownload(lesson) {
 }
 
 function getVideoFileName(lesson) {
-  const {createdAt} = lesson.lesson;
+  const {updatedAt} = lesson.video.media;
   const quality = (downloadHD) ? "_HD" : "_SD";
-  return createdAt.slice(0, createdAt.indexOf("T")) + quality + ".mp4";
+  return updatedAt.slice(0, updatedAt.indexOf("T")) + quality + ".mp4";
 }
 
 function getUnitCode(lesson) {
