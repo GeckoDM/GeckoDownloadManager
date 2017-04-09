@@ -77,6 +77,15 @@ function webRequestOnComplete(xhrRequest) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
+      var currentTab = tabs[0].url;
+      console.log(currentTab);
+      var domain = currentTab.match(/^[\w-]+:\/{2,}\[?([\w\.:-]+)\]?(?::[0-9]*)?/)[1];
+      console.log(domain)
+      if(domain !== "echo360.org.au"){
+        document.getElementById("load").setAttribute("disabled",true);
+      }
+  });
   // add load button onclick
   var loadButton = document.getElementById('load');
   loadButton.addEventListener('click', function () {
@@ -87,21 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
       var code = 'window.location.reload();';
       chrome.tabs.executeScript(tab.id, {code: code});
     });
-  }, false);
 
-  /*
-  chrome.tabs.getCurrent(function(tab){
-        console.log(tab.url);
-        if(/^https?:\/\/([a-zA-Z\d-]+\.){0,}echo360\.org.au$/.test(tab.url)){
-          $("#main").css("visibility", "visible")
-          $("#warning").css("visibility", "visible")
-        } else {
-          $("#main").css("visibility", "visible")
-          $("#warning").css("visibility", "visible")
-        }
-    }
-  );
-  */
+  }, false);
 
   // add download button onclick
   var downloadButton = document.getElementById('download');
