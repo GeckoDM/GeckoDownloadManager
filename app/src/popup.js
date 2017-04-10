@@ -14,9 +14,11 @@ function getVideoFileName(lesson) {
   return updatedAt.slice(0, updatedAt.indexOf("T")) + quality + ".mp4";
 }
 
+// Returns only unit code.
 function getUnitCode(lesson) {
   const lectureName = lesson.lesson.name;
-  return lectureName.slice(0, lectureName.indexOf("/"));
+  var unitCodeTrailing = lectureName.slice(0, lectureName.indexOf("/"));
+  return unitCodeTrailing.split("_")[0];
 }
 
 function getDownloadLink(lesson) {
@@ -63,7 +65,7 @@ function webRequestOnComplete(xhrRequest) {
           downloadables.forEach((downloadable) => {
             const option = document.createElement("option");
             option.defaultSelected = true;
-            const name = getVideoFileName(downloadable);
+            const name = getUnitCode(downloadable) + "_" + getVideoFileName(downloadable);
 
             option.innerHTML = name;
             lectureSelect.appendChild(option);
@@ -121,15 +123,16 @@ document.addEventListener('DOMContentLoaded', function() {
       if (selected.indexOf(i) != -1)
         toDownload.push(downloadables[i]);
     }
-
+    let unitCode = getUnitCode(downloadables[0])
     toDownload.forEach((downloadable) => {
       console.log(getDownloadLink(downloadable));
       console.log(getVideoFileName(downloadable));
       if (shouldDownload) {
-        console.log("Downloading");
+        let saveFileAs = unitCode + "_" + getVideoFileName(downloadable);
+        console.log("Downloading " + saveFileAs);
         chrome.downloads.download({
           url: getDownloadLink(downloadable),
-          filename: "MULO Lectures/" + getUnitCode(downloadable) + "/" + getVideoFileName(downloadable)
+          filename: "Echo360_Lectures/" + unitCode + "/" + saveFileAs
         });
       }
     });
