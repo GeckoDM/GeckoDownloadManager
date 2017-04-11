@@ -8,7 +8,7 @@ Make Echo360 great again
 
 Make a chrome extension that allows students to download all their lectures (that they probably won't watch anyway) with the click of a single button.
 
-## Using
+## Usage
 
 ### 1. Go to the Echo download link provided by your institution.
 <img src="/screenshots/screenshot-dl_link.png" >
