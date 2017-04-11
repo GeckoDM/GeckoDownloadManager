@@ -32,6 +32,7 @@ function getDownloadLink(lesson) {
   const {primaryFiles} = lesson.video.media.media.current;
   if (downloadHD) {
     const {s3Url, width, height} = primaryFiles[1];
+    // TODO: URL for access outside of Australia.
     return "https://echo360.org.au/media/download?s3Url=" + s3Url + "&fileName=hd1.mp4&resolution=" + width.toString() + "x" + height.toString();
   } else {
     const {s3Url, width, height} = primaryFiles[0];

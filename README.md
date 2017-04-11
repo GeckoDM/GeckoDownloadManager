@@ -8,15 +8,22 @@ Make Echo360 great again
 
 Make a chrome extension that allows students to download all their lectures (that they probably won't watch anyway) with the click of a single button.
 
-## Screenshots
+## Using
 
-### Gecko
+### 1. Go to the Echo download link provided by your institution.
+<img scr="/screenshots/screenshot-dl_link.png" >
+
+### 2. Load the Echo page (via the link), click on the Gecko extension.
+- Click on load Lectures.
+- Select Lectures to download.
+- Click on download.
+
 <img src="/screenshots/screenshot-usecase.png" >
 
-### Downloading
+### 3. Downloading lectures.
 <img src="/screenshots/screenshot-downloading.png" >
 
-### On Disk
+### 4. On Disk.
 <img src="/screenshots/screenshot-datastore.png" >
 
 ## TODO
