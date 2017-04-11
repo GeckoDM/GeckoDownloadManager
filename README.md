@@ -11,7 +11,7 @@ Make a chrome extension that allows students to download all their lectures (tha
 ## Using
 
 ### 1. Go to the Echo download link provided by your institution.
-<img scr="/screenshots/screenshot-dl_link.png" >
+<img src="/screenshots/screenshot-dl_link.png" >
 
 ### 2. Load the Echo page (via the link), click on the Gecko extension.
 - Click on load Lectures.
