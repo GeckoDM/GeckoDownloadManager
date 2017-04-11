@@ -18,7 +18,14 @@ function getVideoFileName(lesson) {
 function getUnitCode(lesson) {
   const lectureName = lesson.lesson.name;
   var unitCodeTrailing = lectureName.slice(0, lectureName.indexOf("/"));
-  return unitCodeTrailing.split("_")[0];
+
+  try {
+    return unitCodeTrailing.split("_")[0];
+  } catch (err) {
+    // Some Universities may have weird formats.
+    return unitCodeTrailing;
+  }
+
 }
 
 function getDownloadLink(lesson) {
@@ -32,13 +39,13 @@ function getDownloadLink(lesson) {
   }
 }
 
-// job of this function is to listen init mediaLessons once per click.
+// Job of this function is to listen init mediaLessons once per click.
 function webRequestOnComplete(xhrRequest) {
   console.log("Media Lessons obtained!");
 
   if (mediaLessons === undefined) {
     mediaLessons = xhrRequest;
-    // now perform the request again ourselves and download files
+    // Now perform the request again ourselves and download files.
     var getMediaLessonsRequest = new Request(mediaLessons.url, {method: 'GET'});
     fetch(
       getMediaLessonsRequest,
@@ -88,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("load").setAttribute("disabled",true);
       }
   });
-  // add load button onclick
+  // Add load button onclick.
   var loadButton = document.getElementById('load');
   loadButton.addEventListener('click', function () {
     downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
@@ -101,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   }, false);
 
-  // add download button onclick
+  // Add download button onclick.
   var downloadButton = document.getElementById('download');
   downloadButton.disabled = true;
   downloadButton.addEventListener('click', function () {
@@ -117,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
         selected.push(i);
     }
 
-    // using index as unique ID, since dates are not unique
+    // Using index as unique ID, since dates are not unique.
     let toDownload = [];
     for (let i = 0; i < downloadables.length; i++) {
       if (selected.indexOf(i) != -1)
