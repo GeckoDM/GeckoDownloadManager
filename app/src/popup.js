@@ -103,33 +103,73 @@ function webRequestOnComplete(xhrRequest) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
-      var currentTab = tabs[0].url;
-      console.log(currentTab);
-      var domain = currentTab.match(/^[\w-]+:\/{2,}\[?([\w\.:-]+)\]?(?::[0-9]*)?/)[1];
-      console.log(domain)
-      if(domain !== "echo360.org.au"){
-        document.getElementById("load").setAttribute("disabled",true);
-      }
-  });
-  // Add load button onclick.
-  var loadButton = document.getElementById('load');
-  loadButton.addEventListener('click', function () {
-    downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
-    chrome.webRequest.onCompleted.addListener(webRequestOnComplete, {urls: ["*://echo360.org.au/*/media_lessons"]});
-
-    chrome.tabs.getSelected(null, function (tab) {
-      var code = 'window.location.reload();';
-      chrome.tabs.executeScript(tab.id, {code: code});
+function pageSetup(){
+    chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
+        var currentTab = tabs[0].url;
+        console.log(currentTab);
+        var domain = currentTab.match(/^[\w-]+:\/{2,}\[?([\w\.:-]+)\]?(?::[0-9]*)?/)[1];
+        console.log(domain)
+        if(domain !== "echo360.org.au"){
+            document.getElementById("load").setAttribute("disabled",true);
+        }
     });
+}
 
-  }, false);
 
-  // Add download button onclick.
-  var downloadButton = document.getElementById('download');
-  downloadButton.disabled = true;
-  downloadButton.addEventListener('click', function () {
+// BEGIN EXPERIMENTAL BLOCK
+// THIS BLOCK IS AN ALTERANTIVE FOR PUSHING DOWNLOADS
+// SOURCES: https://developer.chrome.com/extensions/downloads#event-onChanged, http://stackoverflow.com/questions/12552803/looping-through-array-with-callback
+
+function ExectureDownload(){
+    performDownload(array[0])
+}
+
+function nextDownload(){
+    if(array.count = index - 1){
+        index = 0;
+        return;
+    } else {
+        performDownload(array[index])
+    }
+}
+
+function performDownload(url){
+    chrome.downloads.download({
+            url: getDownloadLink(downloadable),
+            filename: "Echo360_Lectures/" + unitCode + "/" + saveFileAs
+        }, function callback(downloadId){
+            console.log(downloadId);
+            var currentDownload = {
+                id: downloadId
+            }
+            chrome.downloads.search(currentDownload, function test(result){
+                console.log(result[0]);
+            })
+            chrome.downloads.onChanged.addListener(nextDownload())
+        }
+    );
+}
+//END EXPERIMENTAL BLOCK
+
+document.addEventListener('DOMContentLoaded', function() {
+    pageSetup();
+    // Add load button onclick. To refresh page to populate
+    var loadButton = document.getElementById('load');
+    loadButton.addEventListener('click', function () {
+        downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
+
+        chrome.webRequest.onCompleted.addListener(webRequestOnComplete, {urls: ["*://echo360.org.au/*/media_lessons"]});
+
+        chrome.tabs.getSelected(null, function (tab) {
+          var code = 'window.location.reload();';
+          chrome.tabs.executeScript(tab.id, {code: code});
+        });
+    }, false);
+
+    // Add download button onclick.
+    var downloadButton = document.getElementById('download');
+    downloadButton.disabled = true;
+    downloadButton.addEventListener('click', function () {
     downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
 
 
@@ -148,21 +188,32 @@ document.addEventListener('DOMContentLoaded', function() {
       if (selected.indexOf(i) != -1)
         toDownload.push(downloadables[i]);
     }
+
     let unitCode = getUnitCode(downloadables[0])
+
     toDownload.forEach((downloadable) => {
-      console.log(getDownloadLink(downloadable));
-      console.log(getVideoFileName(downloadable));
-      if (shouldDownload) {
+        console.log(getDownloadLink(downloadable));
+        console.log(getVideoFileName(downloadable));
+        if (shouldDownload) {
         let saveFileAs = unitCode + "_" + getVideoFileName(downloadable);
         console.log("Downloading " + saveFileAs);
         chrome.downloads.download({
-          url: getDownloadLink(downloadable),
-          filename: "Echo360_Lectures/" + unitCode + "/" + saveFileAs
-        });
-      }
+            url: getDownloadLink(downloadable),
+            filename: "Echo360_Lectures/" + unitCode + "/" + saveFileAs
+            }, function callback(downloadId){
+                console.log(downloadId);
+                var currentDownload = {
+                    id: downloadId
+                }
+                chrome.downloads.search(currentDownload, function test(result){
+                    console.log(result[0]);
+                })
+            }
+        );
+        }
     });
     downloadButton.disabled = true;
     mediaLessons = undefined;
-  }, false);
+    }, false);
 
 }, false);
