@@ -4,11 +4,27 @@ let downloadHD = false;
 let downloadables = [];
 let filtered = [];
 
+// Pleb programming.
+function noobDebugging(lesson) {
+  console.log("lesson: " + lesson);
+  console.log("lesson.isFuture: " + lesson.isFuture);
+  console.log("lesson.lesson: " + lesson.lesson);
+  console.log("lesson.lesson.id: " + lesson.lesson.id);
+  console.log("lesson.lesson.updatedAt: " + lesson.lesson.updatedAt);
+}
+
 function canDownload(lesson) {
-  return lesson.isFuture !== true;
+  // TODO: Handle case where isFuture is true and hasAvailableVideo is false, seen this in JSON but not in webview.
+  // let hasAvailableVideo = lesson.hasAvailableVideo; 
+  let downloadable = lesson.isFuture !== true;
+  return downloadable;
 }
 
 function getVideoFileName(lesson) {
+  // ES6 allows you to do this.
+  // Old: const updatedAt = lesson.lesson.updatedAt;
+  // Old: const age, name = person.age, person.name 
+  // New: const {age, name} = person;
   const {updatedAt} = lesson.video.media;
   const quality = (downloadHD) ? "_HD" : "_SD";
   return updatedAt.slice(0, updatedAt.indexOf("T")) + quality + ".mp4";
@@ -18,17 +34,18 @@ function getVideoFileName(lesson) {
 function getUnitCode(lesson) {
   const lectureName = lesson.lesson.name;
   var unitCodeTrailing = lectureName.slice(0, lectureName.indexOf("/"));
-
   try {
     return unitCodeTrailing.split("_")[0];
   } catch (err) {
     // Some Universities may have weird formats.
     return unitCodeTrailing;
   }
-
 }
 
 function getDownloadLink(lesson) {
+  // Expected case: lesson.video.media.media.current gives array of downloadable links.
+  // Unexpected case: no attribute current (see unkown issues).
+  // TODO: Handle this.
   const {primaryFiles} = lesson.video.media.media.current;
   if (downloadHD) {
     const {s3Url, width, height} = primaryFiles[1];
