@@ -15,6 +15,6 @@
 	  "webRequest",
 	  "*://echo360.org.au/section/",
 	  "downloads",
-    "tabs"
+      "tabs"
   ]
 }
