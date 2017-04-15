@@ -34,6 +34,7 @@ Make a chrome extension that allows students to download all their lectures (tha
 - [x] Name files downloaded
 - [ ] Support incognito?
 - [ ] Differentiate between recordings on the same day?
+- [ ] Migrate to MDL (Material Design Lite)
 
 ## Known Issues
 - downloading many files in a short snap sometimes leads to Echo360 graying out lectures (blocks download), swapping to incognito seems to fix this but we don't support that yet.
