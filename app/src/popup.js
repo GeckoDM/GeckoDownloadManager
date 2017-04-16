@@ -111,6 +111,9 @@ function pageSetup(){
         console.log(domain)
         if(domain !== "echo360.org.au"){
             document.getElementById("load").setAttribute("disabled",true);
+            document.getElementById("downloadHD").setAttribute("disabled", true);
+            document.getElementById("mainBlock").setAttribute("hidden", true);
+            document.getElementById("invalidMsg").removeAttribute("hidden")
         }
     });
 }
