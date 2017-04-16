@@ -19,21 +19,24 @@
       </div>
     </div>
     <div class="container-fluid" id="main">
-      <div class="checkbox">
-        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="downloadHD">
-          <input type="checkbox" id="downloadHD" class="mdl-checkbox__input">
-          <span class="mdl-checkbox__label">Download in HD?</span>
-        </label>
-      </div>
-      <button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="load">Load lectures on page</button>
-      <div class="form-group">
-        Select lectures to download <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Hold ctrl or shift (or drag with the mouse) to select more than one!"></span>
-        <select multiple class="form-control" id="lectureSelect">
-        </select>
-      </div>
+      <h5 id="invalidMsg" hidden>Invald Site Detected. Please visit your insitution's Echo360 Page</h5>
+      <div id="mainBlock">
+        <div class="checkbox">
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="downloadHD">
+            <input type="checkbox" id="downloadHD" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Download in HD?</span>
+          </label>
+        </div>
+        <button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="load">Load lectures on page</button>
+        <div class="form-group">
+          Select lectures to download <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Hold ctrl or shift (or drag with the mouse) to select more than one!"></span>
+          <select multiple class="form-control" id="lectureSelect">
+          </select>
+        </div>
 
-      <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="download">Download</button>
-    </div>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="download">Download</button>
+      </div>
+      </div>
 
     <script>
       $(document).ready(function(){
