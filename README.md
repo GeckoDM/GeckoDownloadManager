@@ -4,6 +4,16 @@
 </div>
 Make Echo360 great again
 
+## Supported Institutions
+Here's a list of institutions which are currently supported by Gecko420
+
+| Institution | Echo360 Version | Status | Notes |
+|-------------|-----------------|--------| ------ |
+| ![Monash University](http://www.monash.edu/__data/assets/git_bridge/0006/509343/deploy/mysource_files/monash-logo-mono.svg) | 2017 | Working | Releasing in v0.1.0 on 20/4/2017 |
+| ![The University of Melbourne](https://upload.wikimedia.org/wikipedia/en/1/10/University_of_Melbourne_logo.png) | N/A | Not Working (LMS Not Supported) | Awaiting potential solution and need verification |
+| ![RMIT](http://mams.rmit.edu.au/pydyrxvec44m.png) | N/A | Not Yet tested | N/A |
+| ![Deakin](https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Deakin_University_Logo.png/200px-Deakin_University_Logo.png) | N/A | Not Yet Tested | N/A |
+
 ## Objective
 
 Make a chrome extension that allows students to download all their lectures (that they probably won't watch anyway) with the click of a single button.
