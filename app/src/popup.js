@@ -15,7 +15,7 @@ function noobDebugging(lesson) {
 
 function canDownload(lesson) {
   // TODO: Handle case where isFuture is true and hasAvailableVideo is false, seen this in JSON but not in webview.
-  // let hasAvailableVideo = lesson.hasAvailableVideo; 
+  // let hasAvailableVideo = lesson.hasAvailableVideo;
   let downloadable = lesson.isFuture !== true;
   return downloadable;
 }
@@ -23,7 +23,7 @@ function canDownload(lesson) {
 function getVideoFileName(lesson) {
   // ES6 allows you to do this.
   // Old: const updatedAt = lesson.lesson.updatedAt;
-  // Old: const age, name = person.age, person.name 
+  // Old: const age, name = person.age, person.name
   // New: const {age, name} = person;
   const {updatedAt} = lesson.video.media;
   const quality = (downloadHD) ? "_HD" : "_SD";
@@ -118,41 +118,41 @@ function pageSetup(){
     });
 }
 
-
-// BEGIN EXPERIMENTAL BLOCK
-// THIS BLOCK IS AN ALTERANTIVE FOR PUSHING DOWNLOADS
-// SOURCES: https://developer.chrome.com/extensions/downloads#event-onChanged, http://stackoverflow.com/questions/12552803/looping-through-array-with-callback
-
-function ExectureDownload(){
-    performDownload(array[0])
-}
-
-function nextDownload(){
-    if(array.count = index - 1){
-        index = 0;
-        return;
-    } else {
-        performDownload(array[index])
-    }
-}
-
-function performDownload(url){
-    chrome.downloads.download({
-            url: getDownloadLink(downloadable),
-            filename: "Echo360_Lectures/" + unitCode + "/" + saveFileAs
-        }, function callback(downloadId){
-            console.log(downloadId);
-            var currentDownload = {
-                id: downloadId
-            }
-            chrome.downloads.search(currentDownload, function test(result){
-                console.log(result[0]);
-            })
-            chrome.downloads.onChanged.addListener(nextDownload())
-        }
-    );
-}
-//END EXPERIMENTAL BLOCK
+// No longer needed -Cal
+// // BEGIN EXPERIMENTAL BLOCK
+// // THIS BLOCK IS AN ALTERANTIVE FOR PUSHING DOWNLOADS
+// // SOURCES: https://developer.chrome.com/extensions/downloads#event-onChanged, http://stackoverflow.com/questions/12552803/looping-through-array-with-callback
+//
+// function ExectureDownload(){
+//     performDownload(array[0])
+// }
+//
+// function nextDownload(){
+//     if(array.count = index - 1){
+//         index = 0;
+//         return;
+//     } else {
+//         performDownload(array[index])
+//     }
+// }
+//
+// function performDownload(url){
+//     chrome.downloads.download({
+//             url: getDownloadLink(downloadable),
+//             filename: "Echo360_Lectures/" + unitCode + "/" + saveFileAs
+//         }, function callback(downloadId){
+//             console.log(downloadId);
+//             var currentDownload = {
+//                 id: downloadId
+//             }
+//             chrome.downloads.search(currentDownload, function test(result){
+//                 console.log(result[0]);
+//             })
+//             chrome.downloads.onChanged.addListener(nextDownload())
+//         }
+//     );
+// }
+// //END EXPERIMENTAL BLOCK
 
 document.addEventListener('DOMContentLoaded', function() {
     pageSetup();
@@ -173,50 +173,29 @@ document.addEventListener('DOMContentLoaded', function() {
     var downloadButton = document.getElementById('download');
     downloadButton.disabled = true;
     downloadButton.addEventListener('click', function () {
-    downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
+      downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
 
+      const lectureSelect = document.getElementById("lectureSelect");
+      const options = lectureSelect.options;
 
-    const lectureSelect = document.getElementById("lectureSelect");
-    const options = lectureSelect.options;
+      let selected = [];
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].selected)
+          selected.push(i);
+      }
 
-    let selected = [];
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].selected)
-        selected.push(i);
-    }
+      // Using index as unique ID, since dates are not unique.
+      let toDownload = [];
+      for (let i = 0; i < downloadables.length; i++) {
+        if (selected.indexOf(i) != -1)
+          toDownload.push(downloadables[i]);
+      }
 
-    // Using index as unique ID, since dates are not unique.
-    let toDownload = [];
-    for (let i = 0; i < downloadables.length; i++) {
-      if (selected.indexOf(i) != -1)
-        toDownload.push(downloadables[i]);
-    }
-
-    let unitCode = getUnitCode(downloadables[0])
-
-    toDownload.forEach((downloadable) => {
-        console.log(getDownloadLink(downloadable));
-        console.log(getVideoFileName(downloadable));
-        if (shouldDownload) {
-        let saveFileAs = unitCode + "_" + getVideoFileName(downloadable);
-        console.log("Downloading " + saveFileAs);
-        chrome.downloads.download({
-            url: getDownloadLink(downloadable),
-            filename: "Echo360_Lectures/" + unitCode + "/" + saveFileAs
-            }, function callback(downloadId){
-                console.log(downloadId);
-                var currentDownload = {
-                    id: downloadId
-                }
-                chrome.downloads.search(currentDownload, function test(result){
-                    console.log(result[0]);
-                })
-            }
-        );
-        }
-    });
-    downloadButton.disabled = true;
-    mediaLessons = undefined;
+      const port = chrome.runtime.connect();
+      port.postMessage(toDownload, downloadHD);
+      downloadButton.disabled = true;
+      mediaLessons = undefined;
+      return;
     }, false);
 
 }, false);
