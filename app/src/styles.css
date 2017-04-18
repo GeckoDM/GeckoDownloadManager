@@ -1,24 +1,27 @@
-      body {
-        padding-bottom: 20px;
-        width: 400px;
-      }
-      button {
-        width: 100%;
-        padding: 8px 0;
-        border: none
-      }
-      .btn-primary[disabled] {
-        background-color: #cccccc;
-      }
-      .btn-primary[disabled]:hover {
-        background-color: #cccccc;
-      }
-      .form-group {
-        margin: 8px 0;
-      }
-      #lectureSelect {
-        height: 200px;
-      }
-      .span {
-        float: right;
-      }
+.mdl-js {
+  height: auto;
+}
+body {
+  padding-bottom: 20px;
+  width: 400px;
+}
+button {
+  width: 100%;
+  padding: 8px 0;
+  border: none
+}
+.btn-primary[disabled] {
+  background-color: #cccccc;
+}
+.btn-primary[disabled]:hover {
+  background-color: #cccccc;
+}
+.form-group {
+  margin: 8px 0;
+}
+#lectureSelect {
+  height: 200px;
+}
+.span {
+  float: right;
+}
