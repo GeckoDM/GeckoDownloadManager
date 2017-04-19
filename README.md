@@ -4,6 +4,8 @@
 </div>
 Make Echo360 great again
 
+https://gecko420.github.io/
+
 ## Supported Institutions
 To see supported instituions visit [https://github.com/darvid7/Gecko420/wiki/Supported-Institutions](https://github.com/darvid7/Gecko420/wiki/Supported-Institutions)
 
@@ -38,8 +40,9 @@ Make a chrome extension that allows students to download all their lectures (tha
 - [ ] Support incognito?
 - [ ] Differentiate between recordings on the same day?
 - [ ] Migrate to MDL (Material Design Lite)
+- [ ] Fix download blocking (multiple downloads, slow internet)
 
 ## Known Issues
-- downloading many files in a short snap sometimes leads to Echo360 graying out lectures (blocks download), swapping to incognito seems to fix this but we don't support that yet.
+- Downloading many files in a short time span sometimes leads to Echo360 or Amazon S3 blocking downloads (sometimes it greys out lectures).
 
 <img src="/screenshots/screenshot-blocked.png" >
