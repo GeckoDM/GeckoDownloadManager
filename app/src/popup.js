@@ -14,9 +14,7 @@ function noobDebugging(lesson) {
 }
 
 function canDownload(lesson) {
-  // TODO: Handle case where isFuture is true and hasAvailableVideo is false, seen this in JSON but not in webview.
-  // let hasAvailableVideo = lesson.hasAvailableVideo;
-  let downloadable = lesson.isFuture !== true;
+  let downloadable = (lesson.isFuture !== true && lesson.hasAvailableVideo !== true);
   return downloadable;
 }
 
