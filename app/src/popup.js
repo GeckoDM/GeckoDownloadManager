@@ -14,7 +14,7 @@ function noobDebugging(lesson) {
 }
 
 function canDownload(lesson) {
-  let downloadable = (lesson.isFuture !== true && lesson.hasAvailableVideo !== true);
+  let downloadable = (lesson.isFuture === false && lesson.hasAvailableVideo === true && lesson.video != null && lesson.video.media && lesson.video.media.media);
   return downloadable;
 }
 
