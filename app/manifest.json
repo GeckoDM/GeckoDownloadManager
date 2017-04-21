@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
 
-  "name": "Gecko420",
-  "short_name": "Gecko",
-  "description": "A Echo360 Lecture Downloader",
-  "version": "0.1.2",
+  "name": "GeckoDownloadManager",
+  "short_name": "GeckoDM",
+  "description": "A Download Manager for the Echo360 Lecture System",
+  "version": "0.1.6",
   "homepage_url": "http://gecko420.github.io/",
   "icons": { "16": "drawables/launcher/icon-16.png",
            "64": "drawables/launcher/icon-64.png",
