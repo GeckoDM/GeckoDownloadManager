@@ -58,7 +58,6 @@ function getDownloadLink(lesson) {
 // Job of this function is to listen init mediaLessons once per click.
 function webRequestOnComplete(xhrRequest) {
   console.log("Media Lessons obtained!");
-
   if (mediaLessons === undefined) {
     mediaLessons = xhrRequest;
     // Now perform the request again ourselves and download files.
@@ -116,42 +115,6 @@ function pageSetup(){
     });
 }
 
-// No longer needed -Cal
-// // BEGIN EXPERIMENTAL BLOCK
-// // THIS BLOCK IS AN ALTERANTIVE FOR PUSHING DOWNLOADS
-// // SOURCES: https://developer.chrome.com/extensions/downloads#event-onChanged, http://stackoverflow.com/questions/12552803/looping-through-array-with-callback
-//
-// function ExectureDownload(){
-//     performDownload(array[0])
-// }
-//
-// function nextDownload(){
-//     if(array.count = index - 1){
-//         index = 0;
-//         return;
-//     } else {
-//         performDownload(array[index])
-//     }
-// }
-//
-// function performDownload(url){
-//     chrome.downloads.download({
-//             url: getDownloadLink(downloadable),
-//             filename: "Echo360_Lectures/" + unitCode + "/" + saveFileAs
-//         }, function callback(downloadId){
-//             console.log(downloadId);
-//             var currentDownload = {
-//                 id: downloadId
-//             }
-//             chrome.downloads.search(currentDownload, function test(result){
-//                 console.log(result[0]);
-//             })
-//             chrome.downloads.onChanged.addListener(nextDownload())
-//         }
-//     );
-// }
-// //END EXPERIMENTAL BLOCK
-
 document.addEventListener('DOMContentLoaded', function() {
     pageSetup();
     // Add load button onclick. To refresh page to populate
@@ -192,7 +155,9 @@ document.addEventListener('DOMContentLoaded', function() {
       const port = chrome.runtime.connect();
       port.postMessage(toDownload, downloadHD);
       downloadButton.disabled = true;
+      $("#lectureSelect").empty();
       mediaLessons = undefined;
+
       return;
     }, false);
 
