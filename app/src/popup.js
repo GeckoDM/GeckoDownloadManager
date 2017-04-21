@@ -101,6 +101,7 @@ function webRequestOnComplete(xhrRequest) {
 }
 
 function pageSetup(){
+    document.getElementById("versionLabel").innerText = chrome.runtime.getManifest().version;
     chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
         var currentTab = tabs[0].url;
         console.log(currentTab);

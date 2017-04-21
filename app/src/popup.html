@@ -16,7 +16,7 @@
     <div class="demo-card-wide mdl-card mdl-shadow--2dp">
       <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Welcome</h2>
-        <img src="./images/gecko420-trans.png" width="100%"></img>
+        <img src="./images/gecko420-trans.png" width="100%"></img> <br/>
       </div>
     </div>
     <div class="container-fluid" id="main">
@@ -30,12 +30,17 @@
         </div>
         <button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="load">Load lectures on page</button>
         <div class="form-group">
-          Select lectures to download <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Hold ctrl or shift (or drag with the mouse) to select more than one!"></span>
+          Select lecture(s) to download.
+          <div id="info" class="icon material-icons">info</div>
+          <div class="mdl-tooltip" data-mdl-for="info">
+            You can <strong>use Ctrl or Shift</strong> to select multiple lectures to download the same time.
+          </div>
           <select multiple class="form-control" id="lectureSelect">
           </select>
         </div>
 
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="download">Download</button>
+        <i style="color: lightgray" >Current Version: <span id="versionLabel"></span></i>
       </div>
       </div>
   </body>
