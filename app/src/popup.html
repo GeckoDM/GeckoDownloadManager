@@ -15,11 +15,16 @@
     <div class="demo-card-wide mdl-card mdl-shadow--2dp">
       <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Welcome</h2>
-        <img src="./images/gecko420-trans.png" width="100%"></img> <br/>
+        <img src="./images/geckodm.png" width="100%"></img> <br/>
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent"
+                id="optionsBtn"
+                style="float: right; bottom: 0.5%; position: absolute; z-index: 100; right: 0; display: block">
+          <i class="material-icons">settings</i>
+        </button>
       </div>
     </div>
-    <div class="container-fluid" id="main">
-      <h5 id="invalidMsg" hidden>Invald Site Detected. Please visit your insitution's Echo360 Page</h5>
+    <div class="mdl-layout__content container-fluid" id="main">
+      <h5 id="invalidMsg" style="display: block" hidden>Invalid Site Detected. Please visit your insitution's Echo360 Page or <a href="https://echo360.org.au" target="_blank">https://echo360.org.au</a></h5>
       <div id="mainBlock">
         <div class="checkbox">
           <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="downloadHD">
