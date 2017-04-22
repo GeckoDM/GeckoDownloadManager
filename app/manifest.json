@@ -24,12 +24,7 @@
       "storage"
   ],
   "options_ui": {
-    // Required.
     "page": "src/options/options.html",
-    // Recommended.
-    // "chrome_style": false
-    // Not recommended; only provided for backwards compatibility,
-    // and will be unsupported in a future version of Chrome (TBD).
     "open_in_tab": true
   }
 }
