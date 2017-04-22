@@ -137,6 +137,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, false);
 
+    document.getElementById("optionsBtn").addEventListener('click', function(){
+        chrome.runtime.openOptionsPage();
+    });
     // Add download button onclick.
     var downloadButton = document.getElementById('download');
     downloadButton.disabled = true;

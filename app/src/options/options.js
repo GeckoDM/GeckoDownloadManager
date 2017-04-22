@@ -23,6 +23,7 @@ function resetOptions(){
     displayFinished('Resetted Settings to Default!');
   });
   document.getElementById('hdenable').checked = false;
+  location.reload();
 }
 
 /**
