@@ -4,7 +4,7 @@
   "name": "GeckoDownloadManager",
   "short_name": "GeckoDM",
   "description": "A Download Manager for the Echo360 Lecture System",
-  "version": "0.1.8",
+  "version": "0.1.12",
   "homepage_url": "http://gecko420.github.io/",
   "icons": { "16": "drawables/launcher/icon-16.png",
            "64": "drawables/launcher/icon-64.png",
@@ -21,6 +21,16 @@
 	  "webRequest",
 	  "*://echo360.org.au/section/",
 	  "downloads",
-      "tabs"
-  ]
+      "tabs",
+      "storage"
+  ],
+  "options_ui": {
+    // Required.
+    "page": "src/options/options.html",
+    // Recommended.
+    // "chrome_style": false
+    // Not recommended; only provided for backwards compatibility,
+    // and will be unsupported in a future version of Chrome (TBD).
+    "open_in_tab": true
+  }
 }

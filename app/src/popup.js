@@ -114,6 +114,12 @@ function pageSetup(){
             document.getElementById("invalidMsg").removeAttribute("hidden")
         }
     });
+    // Use default value color = 'red' and likesColor = true.
+    chrome.storage.sync.get({
+        enableHD: false,
+    }, function(items) {
+        document.getElementById('downloadHD').checked = items.enableHD;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
