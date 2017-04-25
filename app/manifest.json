@@ -3,7 +3,7 @@
 
   "name": "geckoDM",
   "description": "A Download Manager for the Echo360 Lecture System",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "homepage_url": "http://gecko420.github.io/",
   "icons": { "16": "drawables/launcher/icon-16.png",
            "64": "drawables/launcher/icon-64.png",
@@ -24,12 +24,7 @@
       "storage"
   ],
   "options_ui": {
-    // Required.
     "page": "src/options/options.html",
-    // Recommended.
-    // "chrome_style": false
-    // Not recommended; only provided for backwards compatibility,
-    // and will be unsupported in a future version of Chrome (TBD).
     "open_in_tab": true
   }
 }
