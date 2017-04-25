@@ -82,7 +82,7 @@ function webRequestOnComplete(xhrRequest) {
             else if (nameA == nameB) return 0;
             else return 1;
           });
-
+          const lectureTable = document.getElementById("lectures");
           const lectureSelect = document.getElementById("lectureSelect");
           downloadables.forEach((downloadable) => {
             const option = document.createElement("option");

@@ -14,7 +14,6 @@
   <body>
     <div class="demo-card-wide mdl-card mdl-shadow--2dp">
       <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">Welcome</h2>
         <img src="./images/geckodm.png" width="100%"></img> <br/>
       </div>
     </div>
@@ -32,20 +31,20 @@
           Select lecture(s) to download.
           <div id="info" class="icon material-icons">info</div>
           <div class="mdl-tooltip" data-mdl-for="info">
-            You can <strong>use Ctrl or Shift</strong> to select multiple lectures to download the same time.
+            You can <strong>use Ctrl or Shift</strong> to select multiple lectures to download at the same time.
           </div>
           <select multiple class="form-control" id="lectureSelect">
           </select>
         </div>
 
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="download">Download</button>
-        <i style="color: lightgray" >Current Version: <span id="versionLabel"></span></i>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="optionsBtn" >
+          <i class="material-icons">settings</i>
+          Configure geckoDM
+        </button>
+        <i style="color: gray" >Copyright &copy; 2017 geckoDM | Version: <span id="versionLabel"></span></i>
 
       </div>
-      </div>
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="optionsBtn" >
-      <i class="material-icons">settings</i>
-      Configure geckoDM
-    </button>
+    </div>
   </body>
 </html>
