@@ -13,12 +13,12 @@ function noobDebugging(lesson) {
   console.log("lesson.lesson.updatedAt: " + lesson.lesson.updatedAt);
 }
 
-function canDownload(lesson) {
-  let downloadable = (lesson.isFuture === false && lesson.hasAvailableVideo === true && lesson.video != null && lesson.video.media && lesson.video.media.media);
+function canDownload({lesson}) {
+  let downloadable = (lesson.isFuture === false && lesson.hasAvailableVideo === true && lesson.video != null && lesson.video.media && lesson.video.media.media) ? true : false;
   return downloadable;
 }
 
-function getVideoFileName(lesson) {
+function getVideoFileName({lesson}) {
   // ES6 allows you to do this.
   // Old: const updatedAt = lesson.lesson.updatedAt;
   // Old: const age, name = person.age, person.name
@@ -29,7 +29,7 @@ function getVideoFileName(lesson) {
 }
 
 // Returns only unit code.
-function getUnitCode(lesson) {
+function getUnitCode({lesson}) {
   const lectureName = lesson.lesson.name;
   var unitCodeTrailing = lectureName.slice(0, lectureName.indexOf("/"));
   try {
@@ -40,7 +40,7 @@ function getUnitCode(lesson) {
   }
 }
 
-function getDownloadLink(lesson) {
+function getDownloadLink({lesson}) {
   // Expected case: lesson.video.media.media.current gives array of downloadable links.
   // Unexpected case: no attribute current (see unkown issues).
   // TODO: Handle this.
@@ -71,32 +71,31 @@ function webRequestOnComplete(xhrRequest) {
       .then((getMediaLessonsResponse) => getMediaLessonsResponse.json())
       .then((getMediaLessonsJson) => {
         console.log(getMediaLessonsJson);
-        getMediaLessonsJson.data.forEach((dataItem) => {
-          var lessons = dataItem.lessons;
-          downloadables = lessons.filter((lesson) => {
-            return canDownload(lesson);
-          });
-          downloadables.sort((a, b) => {
-            const nameA = getVideoFileName(a), nameB = getVideoFileName(b);
-            if (nameA < nameB) return -1;
-            else if (nameA == nameB) return 0;
-            else return 1;
-          });
-          const lectureTable = document.getElementById("lectures");
-          const lectureSelect = document.getElementById("lectureSelect");
-          downloadables.forEach((downloadable) => {
-            const option = document.createElement("option");
-            option.defaultSelected = true;
-            const name = getUnitCode(downloadable) + "_" + getVideoFileName(downloadable);
-
-            option.innerHTML = name;
-            lectureSelect.appendChild(option);
-          });
-
-          var downloadButton = document.getElementById('download');
-          downloadButton.disabled = false;
+        downloadables = getMediaLessonsJson.data.filter((dataItem) => {
+          return canDownload(dataItem);
         });
-      });
+
+        // sort downloadables
+        downloadables.sort((a, b) => {
+          const nameA = getVideoFileName(a), nameB = getVideoFileName(b);
+          if (nameA < nameB) return -1;
+          else if (nameA == nameB) return 0;
+          else return 1;
+        });
+        const lectureTable = document.getElementById("lectures");
+        const lectureSelect = document.getElementById("lectureSelect");
+        downloadables.forEach((downloadable) => {
+          const option = document.createElement("option");
+          option.defaultSelected = true;
+          const name = getUnitCode(downloadable) + "_" + getVideoFileName(downloadable);
+
+          option.innerHTML = name;
+          lectureSelect.appendChild(option);
+        });
+
+        var downloadButton = document.getElementById('download');
+        downloadButton.disabled = false;
+        });
   }
 }
 
@@ -129,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadButton.addEventListener('click', function () {
         downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
 
-        chrome.webRequest.onCompleted.addListener(webRequestOnComplete, {urls: ["*://echo360.org.au/*/media_lessons"]});
+        chrome.webRequest.onCompleted.addListener(webRequestOnComplete, {urls: ["*://echo360.org.au/*/syllabus"]});
 
         chrome.tabs.getSelected(null, function (tab) {
           var code = 'window.location.reload();';
