@@ -6,6 +6,8 @@ Make Echo360 great again
 
 <https://geckodm.github.io>
 
+[![](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/pgkfjobhhfckamidemkddfnnkknomobe/)
+
 ## Supported Institutions
 To see supported institutions visit [https://github.com/darvid7/Gecko420/wiki/Supported-Institutions](https://github.com/darvid7/Gecko420/wiki/Supported-Institutions)
 
