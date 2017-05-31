@@ -4,7 +4,7 @@
 </div>
 Make Echo360 great again
 
-https://gecko420.github.io/
+<https://geckodm.github.io>
 
 ## Supported Institutions
 To see supported institutions visit [https://github.com/darvid7/Gecko420/wiki/Supported-Institutions](https://github.com/darvid7/Gecko420/wiki/Supported-Institutions)
