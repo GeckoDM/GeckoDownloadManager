@@ -1,4 +1,4 @@
-function getVideoFileName(lesson, downloadHD) {
+function getVideoFileName({lesson}, downloadHD) {
   // ES6 allows you to do this.
   // Old: const updatedAt = lesson.lesson.updatedAt;
   // Old: const age, name = person.age, person.name
@@ -9,7 +9,7 @@ function getVideoFileName(lesson, downloadHD) {
 }
 
 // Returns only unit code.
-function getUnitCode(lesson) {
+function getUnitCode({lesson}) {
   const lectureName = lesson.lesson.name;
   var unitCodeTrailing = lectureName.slice(0, lectureName.indexOf("/"));
   try {
@@ -20,7 +20,7 @@ function getUnitCode(lesson) {
   }
 }
 
-function getDownloadLink(lesson, downloadHD) {
+function getDownloadLink({lesson}, downloadHD) {
   // Expected case: lesson.video.media.media.current gives array of downloadable links.
   // Unexpected case: no attribute current (see unkown issues).
   // TODO: Handle this.
