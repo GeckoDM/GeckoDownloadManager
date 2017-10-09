@@ -94,7 +94,7 @@ function webRequestOnComplete(xhrRequest) {
         });
 
         var downloadButton = document.getElementById('download');
-        downloadButton.disabled = false;
+          downloadButton.disabled = false;
         });
   }
 }
