@@ -4,15 +4,6 @@ let downloadHD = false;
 let downloadables = [];
 let filtered = [];
 
-// Pleb programming.
-function noobDebugging(lesson) {
-  console.log("lesson: " + lesson);
-  console.log("lesson.isFuture: " + lesson.isFuture);
-  console.log("lesson.lesson: " + lesson.lesson);
-  console.log("lesson.lesson.id: " + lesson.lesson.id);
-  console.log("lesson.lesson.updatedAt: " + lesson.lesson.updatedAt);
-}
-
 function canDownload({lesson}) {
   let downloadable = (lesson.isFuture === false && lesson.hasAvailableVideo === true && lesson.video != null && lesson.video.media && lesson.video.media.media) ? true : false;
   return downloadable;
