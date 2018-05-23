@@ -25,13 +25,14 @@ function getDownloadLink({lesson}, downloadHD) {
   // Unexpected case: no attribute current (see unkown issues).
   // TODO: Handle this.
   const {primaryFiles} = lesson.video.media.media.current;
+
   if (downloadHD) {
     const {s3Url, width, height} = primaryFiles[1];
     // TODO: URL for access outside of Australia.
-    return "https://echo360.org.au/media/download?s3Url=" + s3Url + "&fileName=hd1.mp4&resolution=" + width.toString() + "x" + height.toString();
+    return s3Url;
   } else {
     const {s3Url, width, height} = primaryFiles[0];
-    return "https://echo360.org.au/media/download?s3Url=" + s3Url + "&fileName=sd1.mp4&resolution=" + width.toString() + "x" + height.toString();
+    return s3Url;
   }
 }
 
@@ -41,6 +42,7 @@ chrome.extension.onConnect.addListener(function(port) {
        let unitCode = getUnitCode(toDownload[0]);
 
        toDownload.forEach((downloadable) => {
+           console.log('downloadable information');
            console.log(getDownloadLink(downloadable, downloadHD));
            console.log(getVideoFileName(downloadable, downloadHD));
            let saveFileAs = unitCode + "_" + getVideoFileName(downloadable, downloadHD);
