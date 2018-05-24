@@ -29,6 +29,7 @@ function getDownloadLink({lesson}, downloadHD) {
   if (downloadHD) {
     const {s3Url, width, height} = primaryFiles[1];
     // TODO: URL for access outside of Australia.
+    // URL Access has been enabled, we might need a global variable instead or 2 versions (for multi-region support)
     return s3Url;
   } else {
     const {s3Url, width, height} = primaryFiles[0];
