@@ -41,15 +41,21 @@ function getDownloadLink({lesson}) {
   // Expected case: lesson.video.media.media.current gives array of downloadable links.
   // Unexpected case: no attribute current (see unkown issues).
   // TODO: Handle this.
-  const {primaryFiles} = lesson.video.media.media.current;
-  if (downloadHD) {
-    const {s3Url, width, height} = primaryFiles[1];
-    // TODO: URL for access outside of Australia.
-    return `https://${echo360Domain}/media/download?s3Url=` + s3Url + "&fileName=hd1.mp4&resolution=" + width.toString() + "x" + height.toString();
-  } else {
-    const {s3Url, width, height} = primaryFiles[0];
-    return `https://${echo360Domain}/media/download?s3Url=` + s3Url + "&fileName=sd1.mp4&resolution=" + width.toString() + "x" + height.toString();
-  }
+      chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
+
+        var currentTab = tabs[0].url;
+        var domain = currentTab.match(/^[\w-]+:\/{2,}\[?([\w\.:-]+)\]?(?::[0-9]*)?/)[1];
+
+        const {primaryFiles} = lesson.video.media.media.current;
+        if (downloadHD) {
+          const {s3Url, width, height} = primaryFiles[1];
+          // TODO: URL for access outside of Australia.
+          return `https://${domain}/media/download?s3Url=` + s3Url + "&fileName=hd1.mp4&resolution=" + width.toString() + "x" + height.toString();
+        } else {
+          const {s3Url, width, height} = primaryFiles[0];
+          return `https://${domain}/media/download?s3Url=` + s3Url + "&fileName=sd1.mp4&resolution=" + width.toString() + "x" + height.toString();
+        }
+      });
 }
 
 // Job of this function is to listen init mediaLessons once per click.
