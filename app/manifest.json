@@ -21,6 +21,7 @@
     "script-src 'self'; object-src 'self' ; 'unsafe-inline'; fonts.googleapis.com/",
   "permissions": [
     "webRequest",
+    "*://echo360.org.uk/section/",
     "*://echo360.org.au/section/",
     "downloads",
     "tabs",
