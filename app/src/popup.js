@@ -32,7 +32,7 @@ function getUnitCode({lesson}) {
   try {
       // So UNSW uses ' ' instead of '_'.
       // This is a hack(kinda) to get it working for UNSW but should think of a better way to do it after some sleep.
-    if unitCodeTrailing.includes(" ") {
+    if(unitCodeTrailing.includes(" ")) {
       // Assume can split by space.
       return unitCodeTrailing.split(" ")[0];
     }
