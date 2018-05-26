@@ -6,7 +6,7 @@ Make Echo360 great again
 
 <https://geckodm.github.io>
 
-This project started because a 4 Monash kids were sick of downloading lectures individually and wanted to code instead of study during swotvac :laughing: we all failed.
+This project started because a 4 Monash kids were sick of downloading lectures individually and wanted to code instead of study during swotvac :laughing:we all failed :anguished:
 
 [![](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/pgkfjobhhfckamidemkddfnnkknomobe/)
 
