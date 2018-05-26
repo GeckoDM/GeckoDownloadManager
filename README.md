@@ -6,10 +6,12 @@ Make Echo360 great again
 
 <https://geckodm.github.io>
 
+This project started because a 4 Monash kids were sick of downloading lectures individually and wanted to code instead of study during swotvac :laughing: we all failed.
+
 [![](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/pgkfjobhhfckamidemkddfnnkknomobe/)
 
 ## Supported Institutions
-To see supported institutions visit [https://github.com/darvid7/Gecko420/wiki/Supported-Institutions](https://github.com/darvid7/Gecko420/wiki/Supported-Institutions)
+To see supported institutions visit [https://github.com/GeckoDM/GeckoDownloadManager/wiki/Supported-Institutions](https://github.com/GeckoDM/GeckoDownloadManager/wiki/Supported-Institutions)
 
 ## Objective
 
