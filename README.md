@@ -1,4 +1,4 @@
-# Gecko420
+# Gecko Download Manager (geckoDM) for Echo360
 <div>
 	<img src="/images/qtpi.png" width="100" >
 </div>
