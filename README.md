@@ -8,10 +8,28 @@ Make Echo360 great again
 
 This project started because a 4 Monash kids were sick of downloading lectures individually and wanted to code instead of study during swotvac :laughing:we all failed :anguished:
 
-[![](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/pgkfjobhhfckamidemkddfnnkknomobe/)
+[![](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_340x96.png)](https://chrome.google.com/webstore/detail/pgkfjobhhfckamidemkddfnnkknomobe/)
 
 ## Supported Institutions
 To see supported institutions visit [https://github.com/GeckoDM/GeckoDownloadManager/wiki/Supported-Institutions](https://github.com/GeckoDM/GeckoDownloadManager/wiki/Supported-Institutions)
+
+### Supporting:
+
+<a href="https://monash.edu">
+	<img 
+		src="https://images.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.inplacesoftware.com%2Fwp-content%2Fuploads%2F2014%2F09%2FMonash-University-logo-2.jpg"
+		height="150px" />
+</a>
+<a href="https://www.unimelb.edu.au/">
+	<img 
+		src="https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fpeople.eng.unimelb.edu.au%2Fmanziec%2FImages%2FMelbourne-Uni-logo.jpg&f=1"
+		height="150px" />
+</a>
+<a href="https://unsw.edu.au/">
+	<img 
+		src="https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.missingbitsproductions.com.au%2Fwp-content%2Fuploads%2F2013%2F06%2FUNSW-Logo.jpg&f=1"
+		height="150px" />
+</a>
 
 ## Objective
 
