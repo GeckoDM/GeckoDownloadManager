@@ -12,8 +12,15 @@ function getVideoFileName({lesson}, downloadHD) {
 function getUnitCode({lesson}) {
   const lectureName = lesson.lesson.name;
   var unitCodeTrailing = lectureName.slice(0, lectureName.indexOf("/"));
+  var splitChar = "_";
+  if (unitCodeTrailing.indexOf("_") == -1) {
+    // If there aren't underscores, split by space instead (for e.g. UNSW).
+    if (unitCodeTrailing.indexOf(" ") != -1) {
+      splitChar = " "; 
+    }
+  }
   try {
-    return unitCodeTrailing.split("_")[0];
+    return unitCodeTrailing.split(splitChar)[0];
   } catch (err) {
     // Some Universities may have weird formats.
     return unitCodeTrailing;
