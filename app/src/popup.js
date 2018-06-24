@@ -7,7 +7,8 @@ let echo360Domain = '';
 
 const echo360BaseURIs = [
   'echo360.org.au',
-  'echo360.org.uk'
+  'echo360.org.uk',
+  'echo360.org'
 ]
 
 function canDownload({lesson}) {
