@@ -18,7 +18,7 @@
   },
   "incognito": "spanning",
   "content_security_policy":
-    "script-src 'self'; object-src 'self' ; 'unsafe-inline'; fonts.googleapis.com/",
+    "script-src 'self' https://ssl.google-analytics.com; object-src 'self' ; 'unsafe-inline'; fonts.googleapis.com/; ",
   "permissions": [
     "webRequest",
     "*://echo360.org.uk/section/",

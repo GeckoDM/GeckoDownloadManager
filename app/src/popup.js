@@ -5,6 +5,18 @@ let downloadables = [];
 let filtered = [];
 let echo360Domain = '';
 
+const GA_ACCOUNT_CODE = 'VUEtMTIxMzY2NDY1LTE='
+
+// Google Analytics setup
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', atob(GA_ACCOUNT_CODE)]);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
 const echo360BaseURIs = [
   'echo360.org.au',
   'echo360.org.uk',
@@ -53,6 +65,7 @@ function getDownloadLink({lesson}) {
 
         var currentTab = tabs[0].url;
         var domain = currentTab.match(/^[\w-]+:\/{2,}\[?([\w\.:-]+)\]?(?::[0-9]*)?/)[1];
+        _gaq.push(['_trackEvent', domain, 'visited']);
 
         const {primaryFiles} = lesson.video.media.media.current;
         if (downloadHD) {
@@ -69,6 +82,7 @@ function getDownloadLink({lesson}) {
 // Job of this function is to listen init mediaLessons once per click.
 function webRequestOnComplete(xhrRequest) {
   console.log("Media Lessons obtained!");
+  _gaq.push(['_trackEvent', 'webReqFunc', 'loaded']);
   if (mediaLessons === undefined) {
     mediaLessons = xhrRequest;
     // Now perform the request again ourselves and download files.
