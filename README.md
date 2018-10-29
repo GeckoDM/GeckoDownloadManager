@@ -23,7 +23,7 @@ To see supported institutions visit [https://github.com/GeckoDM/GeckoDownloadMan
 <a href="https://www.unimelb.edu.au/">
 	<img 
 		src="https://brandhub.unimelb.edu.au/guidelines/logos/04_Logo_Vertical-Housed.jpg"
-		height="150px" />
+		height="100px" />
 </a><br/>
 <a href="https://unsw.edu.au/">
 	<img 
