@@ -22,32 +22,32 @@ To see supported institutions visit [https://github.com/GeckoDM/GeckoDownloadMan
 		src="https://www.monash.edu/__data/assets/git_bridge/0006/509343/deploy/mysource_files/monash-logo-mono.svg"
 		height="60px" />
 </a>
-<br/>  
 </div>
+<br/>
 <div>
 <a href="https://www.unimelb.edu.au/">
 	<img 
 		src="https://brandhub.unimelb.edu.au/guidelines/logos/04_Logo_Vertical-Housed.jpg"
 		height="120px" />
 </a>
-<br/>  
 </div>
+<br/>  
 <div>
 <a href="https://unsw.edu.au/">
 	<img 
 		src="https://www.unsw.edu.au/sites/default/files/UNSW_0.png"
 		height="60px" />
 </a>  
-<br/>  
 </div>
+<br/>
 <div>
 <a href="https://www.ed.ac.uk/">
 	<img 
 		src="https://www.ed.ac.uk/sites/all/themes/uoe/assets/logo.png"
 		height="60px" />
 </a>
-<br/>
 </div>
+<br/>
 
 ## Objective
 
