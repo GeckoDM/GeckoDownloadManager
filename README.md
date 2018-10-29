@@ -15,21 +15,39 @@ To see supported institutions visit [https://github.com/GeckoDM/GeckoDownloadMan
 
 ### Supporting:
 
+<br/>
+<div>
 <a href="https://monash.edu">
 	<img 
-		src="https://images.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.inplacesoftware.com%2Fwp-content%2Fuploads%2F2014%2F09%2FMonash-University-logo-2.jpg"
-		height="150px" />
+		src="https://www.monash.edu/__data/assets/git_bridge/0006/509343/deploy/mysource_files/monash-logo-mono.svg"
+		height="60px" />
 </a>
+</div>
+<br/>
+<div>
 <a href="https://www.unimelb.edu.au/">
 	<img 
-		src="https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fpeople.eng.unimelb.edu.au%2Fmanziec%2FImages%2FMelbourne-Uni-logo.jpg&f=1"
-		height="150px" />
+		src="https://brandhub.unimelb.edu.au/guidelines/logos/04_Logo_Vertical-Housed.jpg"
+		height="120px" />
 </a>
+</div>
+<br/>  
+<div>
 <a href="https://unsw.edu.au/">
 	<img 
-		src="https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.missingbitsproductions.com.au%2Fwp-content%2Fuploads%2F2013%2F06%2FUNSW-Logo.jpg&f=1"
-		height="150px" />
+		src="https://www.unsw.edu.au/sites/default/files/UNSW_0.png"
+		height="60px" />
+</a>  
+</div>
+<br/>
+<div>
+<a href="https://www.ed.ac.uk/">
+	<img 
+		src="https://www.ed.ac.uk/sites/all/themes/uoe/assets/logo.png"
+		height="60px" />
 </a>
+</div>
+<br/>
 
 ## Objective
 
