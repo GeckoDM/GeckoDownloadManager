@@ -12,8 +12,15 @@ function getVideoFileName({lesson}, downloadHD) {
 function getUnitCode({lesson}) {
   const lectureName = lesson.lesson.name;
   var unitCodeTrailing = lectureName.slice(0, lectureName.indexOf("/"));
+  var splitChar = "_";
+  if (unitCodeTrailing.indexOf("_") == -1) {
+    // If there aren't underscores, split by space instead (for e.g. UNSW).
+    if (unitCodeTrailing.indexOf(" ") != -1) {
+      splitChar = " "; 
+    }
+  }
   try {
-    return unitCodeTrailing.split("_")[0];
+    return unitCodeTrailing.split(splitChar)[0];
   } catch (err) {
     // Some Universities may have weird formats.
     return unitCodeTrailing;
@@ -25,13 +32,15 @@ function getDownloadLink({lesson}, downloadHD) {
   // Unexpected case: no attribute current (see unkown issues).
   // TODO: Handle this.
   const {primaryFiles} = lesson.video.media.media.current;
+
   if (downloadHD) {
     const {s3Url, width, height} = primaryFiles[1];
     // TODO: URL for access outside of Australia.
-    return "https://echo360.org.au/media/download?s3Url=" + s3Url + "&fileName=hd1.mp4&resolution=" + width.toString() + "x" + height.toString();
+    // URL Access has been enabled, we might need a global variable instead or 2 versions (for multi-region support)
+    return s3Url;
   } else {
     const {s3Url, width, height} = primaryFiles[0];
-    return "https://echo360.org.au/media/download?s3Url=" + s3Url + "&fileName=sd1.mp4&resolution=" + width.toString() + "x" + height.toString();
+    return s3Url;
   }
 }
 
@@ -41,6 +50,7 @@ chrome.extension.onConnect.addListener(function(port) {
        let unitCode = getUnitCode(toDownload[0]);
 
        toDownload.forEach((downloadable) => {
+           console.log('downloadable information');
            console.log(getDownloadLink(downloadable, downloadHD));
            console.log(getVideoFileName(downloadable, downloadHD));
            let saveFileAs = unitCode + "_" + getVideoFileName(downloadable, downloadHD);

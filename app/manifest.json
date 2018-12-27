@@ -3,7 +3,7 @@
 
   "name": "geckoDM",
   "description": "A Download Manager for the Echo360 Lecture System",
-  "version": "0.2.10",
+  "version": "0.3.11",
   "homepage_url": "http://geckodm.github.io/",
   "icons": {
     "16": "drawables/launcher/icon-16.png",
@@ -18,10 +18,12 @@
   },
   "incognito": "spanning",
   "content_security_policy":
-    "script-src 'self'; object-src 'self' ; 'unsafe-inline'; fonts.googleapis.com/",
+    "script-src 'self' https://ssl.google-analytics.com; object-src 'self' ; 'unsafe-inline'; fonts.googleapis.com/; ",
   "permissions": [
     "webRequest",
+    "*://echo360.org.uk/section/",
     "*://echo360.org.au/section/",
+    "*://echo360.org/section/",
     "downloads",
     "tabs",
     "storage"
