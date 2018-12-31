@@ -2,13 +2,18 @@
 <div>
 	<img src="/images/qtpi.png" width="100" >
 </div>
-Make Echo360 great again
+Making Echo360 great again
 
 <https://geckodm.github.io>
 
 This project started because a 4 Monash kids were sick of downloading lectures individually and wanted to code instead of study during swotvac :laughing:we all failed :anguished:
 
 [![](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_340x96.png)](https://chrome.google.com/webstore/detail/pgkfjobhhfckamidemkddfnnkknomobe/)
+
+
+## Introduction
+
+This [Chrome Extension](https://support.google.com/chrome_webstore/answer/2664769?hl=en) allows students to download all their lectures (_that they probably won't watch anyway_) from Echo360 online services with the click of a single button.
 
 ## Supported Institutions
 To see supported institutions visit [https://github.com/GeckoDM/GeckoDownloadManager/wiki/Supported-Institutions](https://github.com/GeckoDM/GeckoDownloadManager/wiki/Supported-Institutions)
@@ -48,10 +53,6 @@ To see supported institutions visit [https://github.com/GeckoDM/GeckoDownloadMan
 </a>
 </div>
 <br/>
-
-## Objective
-
-Make a chrome extension that allows students to download all their lectures (that they probably won't watch anyway) with the click of a single button.
 
 ## Usage
 
