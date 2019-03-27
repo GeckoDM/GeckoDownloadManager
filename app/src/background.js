@@ -48,12 +48,14 @@ chrome.extension.onConnect.addListener(function(port) {
      console.log("Connected .....");
      port.onMessage.addListener(function(toDownload, downloadHD) {
        let unitCode = getUnitCode(toDownload[0]);
+       unitCode = unitCode.replace(/[/\\?%*:|"<>)]/g, '');
 
        toDownload.forEach((downloadable) => {
            console.log('downloadable information');
            console.log(getDownloadLink(downloadable, downloadHD));
            console.log(getVideoFileName(downloadable, downloadHD));
            let saveFileAs = unitCode + "_" + getVideoFileName(downloadable, downloadHD);
+           saveFileAs = saveFileAs.replace(/[/\\?%*:|"<>)]/g, '');
            console.log("Downloading " + saveFileAs);
            chrome.downloads.download({
                url: getDownloadLink(downloadable, downloadHD),
