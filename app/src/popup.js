@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var domain = currentTab.match(/^[\w-]+:\/{2,}\[?([\w\.:-]+)\]?(?::[0-9]*)?/)[1];
 
         downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
-        console.log("echo360loaded", echo360Domain)
+        console.log("echo360loaded", domain)
         chrome.webRequest.onCompleted.addListener(webRequestOnComplete, {urls: [`*://${domain}/*/syllabus`]});
 
         chrome.tabs.getSelected(null, function (tab) {
@@ -196,6 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
           toDownload.push(downloadables[i]);
       }
 
+      // link to background.js
       const port = chrome.runtime.connect();
       port.postMessage(toDownload, downloadHD);
       downloadButton.disabled = true;
