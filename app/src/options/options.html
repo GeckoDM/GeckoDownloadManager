@@ -63,22 +63,19 @@
             <div class="mdl-card mdl-cell mdl-cell--12-col">
               <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
                 <h4 class="mdl-cell mdl-cell--12-col">Options</h4>
+                <p>Auto Saving by Clicking</p>
                 <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="opacity: 0"></div>
                 <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
                   <form action="#">
-                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="hdenable">
-                      <input type="checkbox" id="hdenable" class="mdl-checkbox__input" checked>
-                      <span class="mdl-checkbox__label">Enable HD By Default</span>
+                    <label id="hdenable" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="hdenable">
+                      <input type="checkbox" class="mdl-checkbox__input" checked>
+                      <span class="mdl-checkbox__label">Enable HD</span>
                     </label>
                   </form>
                 </div>
               </div>
               <div class="mdl-card__actions">
               <!-- Accent-colored raised button with ripple -->
-              <button id="saveOptions" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-                Save Options
-              </button>
-              
               <button id="resetOptions" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                 Set to Default
               </button>
@@ -89,6 +86,7 @@
       </main>
     </div>
     <script src="../scripts/material.min.js"></script>
+    <script src="../scripts/jquery.min.js"></script>
     <script src="options.js"></script>
     <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
       <div class="mdl-snackbar__text"></div>
