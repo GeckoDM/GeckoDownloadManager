@@ -135,6 +135,7 @@ function pageSetup(){
             document.getElementById("downloadHD").setAttribute("disabled", true);
             document.getElementById("mainBlock").setAttribute("hidden", true);
             document.getElementById("invalidMsg").removeAttribute("hidden")
+        } else {
             echo360Domain = domain;
         }
     });
