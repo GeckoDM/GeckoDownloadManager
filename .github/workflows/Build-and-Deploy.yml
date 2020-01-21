@@ -1,2 +1,0 @@
-- name: Chrome Addon Action
-  uses: trmcnvn/chrome-addon@v2
