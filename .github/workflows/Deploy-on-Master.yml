@@ -1,0 +1,25 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Zip Folder
+        uses: montudor/action-zip@v0.1.0
+        with:
+          args: zip -qq -r ./release.zip ./app
+      - name: Publish to Web Store
+        uses: trmcnvn/chrome-addon@v2
+        with:
+          extension: pgkfjobhhfckamidemkddfnnkknomobe
+          zip: release.zip
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
