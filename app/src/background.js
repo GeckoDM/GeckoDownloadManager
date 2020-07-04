@@ -1,75 +1,94 @@
-function getVideoFileName({lesson}, downloadHD) {
-  // ES6 allows you to do this.
-  // Old: const updatedAt = lesson.lesson.updatedAt;
-  // Old: const age, name = person.age, person.name
-  // New: const {age, name} = person;
-  const {updatedAt} = lesson.video.media;
-  const quality = (downloadHD) ? "_HD" : "_SD";
-  return updatedAt.slice(0, updatedAt.indexOf("T")) + quality + ".mp4";
+function getVideoFileName({ lesson }) {
+  const dateObj = new Date(lesson.startTimeUTC);
+  const month = dateObj.getUTCMonth() + 1; //months from 1-12
+  const day = dateObj.getUTCDate();
+  const year = dateObj.getUTCFullYear();
+  
+  const startTimeDateObj = new Date(lesson.lesson.timing.start);
+  const startTime = startTimeDateObj.toLocaleTimeString(navigator.language, {
+    hour: '2-digit',
+    minute:'2-digit'
+  });
+
+
+  const endTimeDateObj = new Date(lesson.lesson.timing.end);
+  const endTime = endTimeDateObj.toLocaleTimeString(navigator.language, {
+    hour: '2-digit',
+    minute:'2-digit'
+  });
+
+  const name = year + "-" + month + "-" + day + ' ' + startTime + '-' + endTime;
+
+  return name.replaceAll(':', '\ua789');
 }
 
-// Returns only unit code.
-function getUnitCode({lesson}) {
-  const lectureName = lesson.lesson.name;
-  var unitCodeTrailing = lectureName.slice(0, lectureName.indexOf("/"));
-  var splitChar = "_";
-  if (unitCodeTrailing.indexOf("_") == -1) {
-    // If there aren't underscores, split by space instead (for e.g. UNSW).
-    if (unitCodeTrailing.indexOf(" ") != -1) {
-      splitChar = " "; 
+async function getDownloadLink({ lesson }, downloadHD) {
+  const regex = /(?:\(\")(?:.*)(?:\"\))/;
+  const lessonHTMLPageRequest = new Request(`https://echo360.org.uk/lesson/${lesson.lesson.id}/classroom`, { method: 'GET', credentials: 'include' });
+  const lessonHTMLPageResponse = await fetch(lessonHTMLPageRequest)
+  const lessonHTMLPageText = await lessonHTMLPageResponse.text();
+  const dummyEl = document.createElement('html')
+  dummyEl.innerHTML = lessonHTMLPageText;
+
+  const videoDataString = dummyEl.getElementsByTagName('script')[11].innerText.match(regex)[0]
+  const cleanString = videoDataString.substring(1, videoDataString.length - 1);
+  const videoDataObject = JSON.parse(JSON.parse(cleanString));
+
+  let totalSoruces = 0;
+
+  if (!videoDataObject.video)
+  {
+    return null;
+  }
+
+  videoDataObject.video.playableMedias.forEach((media) => {
+    if (media.sourceIndex > totalSoruces)
+    {
+      totalSoruces = media.sourceIndex;
     }
+  })
+
+  const downloadArray = [];
+  for (let i = 1; i <= totalSoruces; i++)
+  {
+    const quality = downloadHD ? `hd${i}.mp4` : `sd${i}.mp4`;
+    const videoName = `video_source_${i}_${quality}`
+    const templateUrl = new URL(videoDataObject.video.playableMedias[0].uri);
+    templateUrl.search = '';
+    templateUrl.pathname = templateUrl.pathname.replace(/\/[^\/]*$/, `/${quality}`)
+
+    downloadArray.push({
+      url: templateUrl.href,
+      name: videoName,
+    });
   }
-  try {
-    return unitCodeTrailing.split(splitChar)[0];
-  } catch (err) {
-    // Some Universities may have weird formats.
-    return unitCodeTrailing;
-  }
+
+  if (downloadArray.length === 0) debugger;
+
+  return downloadArray;
 }
 
-function getDownloadLink({lesson}, downloadHD) {
-  // Expected case: lesson.video.media.media.current gives array of downloadable links.
-  // Unexpected case: no attribute current (see unkown issues).
-  // TODO: Handle this.
-  const {primaryFiles} = lesson.video.media.media.current;
+chrome.extension.onConnect.addListener(function (port) {
+  console.log("Connected .....");
+  port.onMessage.addListener(function ({toDownload, downloadHD, courseName}) {
 
-  if (downloadHD) {
-    const {s3Url, width, height} = primaryFiles[1];
-    // TODO: URL for access outside of Australia.
-    // URL Access has been enabled, we might need a global variable instead or 2 versions (for multi-region support)
-    return s3Url;
-  } else {
-    const {s3Url, width, height} = primaryFiles[0];
-    return s3Url;
-  }
-}
+    toDownload.forEach((downloadable) => {
+      const saveFileAs = getVideoFileName(downloadable, downloadHD);
 
-chrome.extension.onConnect.addListener(function(port) {
-     console.log("Connected .....");
-     port.onMessage.addListener(function(toDownload, downloadHD) {
-       let unitCode = getUnitCode(toDownload[0]);
-       unitCode = unitCode.replace(/[/\\?%*:|"<>)]/g, '');
-
-       toDownload.forEach((downloadable) => {
-           console.log('downloadable information');
-           console.log(getDownloadLink(downloadable, downloadHD));
-           console.log(getVideoFileName(downloadable, downloadHD));
-           let saveFileAs = unitCode + "_" + getVideoFileName(downloadable, downloadHD);
-           saveFileAs = saveFileAs.replace(/[/\\?%*:|"<>)]/g, '');
-           console.log("Downloading " + saveFileAs);
-           chrome.downloads.download({
-               url: getDownloadLink(downloadable, downloadHD),
-               filename: "Echo360_Lectures/" + unitCode + "/" + saveFileAs
-               }, function callback(downloadId){
-                   console.log(downloadId);
-                   var currentDownload = {
-                       id: downloadId
-                   }
-                   chrome.downloads.search(currentDownload, function test(result){
-                       console.log(result[0]);
-                   })
-               }
-           );
-       });
-     });
+      getDownloadLink(downloadable, downloadHD)
+        .then((downloadArray) => {
+          if (!downloadArray)
+          {
+            return;
+          }
+          
+          downloadArray.forEach((downloadData) => {
+            chrome.downloads.download({
+              url: downloadData.url,
+              filename: `Echo360_Lectures/${courseName}/${saveFileAs}/${downloadData.name}`
+            })
+          })
+        });
+    });
+  });
 })
