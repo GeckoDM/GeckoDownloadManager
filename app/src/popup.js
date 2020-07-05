@@ -29,9 +29,27 @@ function canDownload({ lesson }) {
 }
 
 function getVideoFileName({ lesson }) {
-  const { updatedAt } = lesson.lesson;
-  const quality = (downloadHD) ? "_HD" : "_SD";
-  return updatedAt.slice(0, updatedAt.indexOf("T")) + quality + ".mp4";
+  const dateObj = new Date(lesson.startTimeUTC);
+  const month = dateObj.getUTCMonth() + 1; //months from 1-12
+  const day = dateObj.getUTCDate();
+  const year = dateObj.getUTCFullYear();
+  
+  const startTimeDateObj = new Date(lesson.lesson.timing.start);
+  const startTime = startTimeDateObj.toLocaleTimeString(navigator.language, {
+    hour: '2-digit',
+    minute:'2-digit'
+  });
+
+
+  const endTimeDateObj = new Date(lesson.lesson.timing.end);
+  const endTime = endTimeDateObj.toLocaleTimeString(navigator.language, {
+    hour: '2-digit',
+    minute:'2-digit'
+  });
+
+  const name = year + "-" + month + "-" + day + ' ' + startTime + '-' + endTime;
+
+  return name.replaceAll(':', '\ua789');
 }
 
 // Returns only unit code.
@@ -130,13 +148,11 @@ document.addEventListener('DOMContentLoaded', function () {
   loadButton.addEventListener('click', function () {
 
     chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-
-      var currentTab = tabs[0].url;
-      var domain = currentTab.match(/^[\w-]+:\/{2,}\[?([\w\.:-]+)\]?(?::[0-9]*)?/)[1];
+      echo360Domain = new URL(tabs[0].url).origin;
 
       downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
-      console.log("echo360loaded", domain)
-      chrome.webRequest.onCompleted.addListener(webRequestOnComplete, { urls: [`*://${domain}/*/syllabus`] });
+      console.log("echo360loaded", echo360Domain)
+      chrome.webRequest.onCompleted.addListener(webRequestOnComplete, { urls: [`${echo360Domain}/*/syllabus`] });
 
       chrome.tabs.getSelected(null, function (tab) {
         var code = 'window.location.reload();';
@@ -156,25 +172,23 @@ document.addEventListener('DOMContentLoaded', function () {
     downloadHD = (document.getElementById("downloadHD").checked) ? true : false;
 
     const lectureSelect = document.getElementById("lectureSelect");
-    const options = lectureSelect.options;
+    const options = Array.from(lectureSelect.options);
 
-    let selected = [];
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].selected)
-        selected.push(i);
-    }
-
-    // Using index as unique ID, since dates are not unique.
-    let toDownload = [];
-    for (let i = 0; i < downloadables.length; i++) {
-      if (selected.indexOf(i) != -1)
-        toDownload.push(downloadables[i]);
-    }
+    const toDownload = [];
+    options.forEach((option, i) => {
+      if (option.selected)
+      {
+        toDownload.push({
+          lessonID: downloadables[i].lesson.lesson.id,
+          lessonName: getVideoFileName(downloadables[i]),
+        })
+      }
+    });
 
     // link to background.js
     const port = chrome.runtime.connect();
 
-    port.postMessage({toDownload, downloadHD, courseName});
+    port.postMessage({toDownload, echo360Domain, downloadHD, courseName});
     downloadButton.disabled = true;
     $("#lectureSelect").empty();
     mediaLessons = undefined;
