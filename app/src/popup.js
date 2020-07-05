@@ -52,25 +52,6 @@ function getVideoFileName({ lesson }) {
   return name.replaceAll(':', '\ua789');
 }
 
-// Returns only unit code.
-function getUnitCode({ lesson }) {
-  const lectureName = lesson.lesson.name;
-  var unitCodeTrailing = lectureName.slice(0, lectureName.indexOf("/"));
-  try {
-    // So UNSW uses ' ' instead of '_'.
-    // This is a hack(kinda) to get it working for UNSW but should think of a better way to do it after some sleep.
-    if (unitCodeTrailing.includes(" ")) {
-      // Assume can split by space.
-      return unitCodeTrailing.split(" ")[0];
-    }
-    // Monash uses underscores.
-    return unitCodeTrailing.split("_")[0];
-  } catch (err) {
-    // Some Universities may have weird formats.
-    return unitCodeTrailing;
-  }
-}
-
 // Job of this function is to listen init mediaLessons once per click.
 async function webRequestOnComplete(xhrRequest) {
   console.log("Media Lessons obtained!");
@@ -106,7 +87,7 @@ async function webRequestOnComplete(xhrRequest) {
     downloadables.forEach((downloadable) => {
       const option = document.createElement("option");
       option.defaultSelected = true;
-      const name = getUnitCode(downloadable) + "_" + getVideoFileName(downloadable);
+      const name = courseName + "_" + getVideoFileName(downloadable);
 
       option.innerHTML = name;
       lectureSelect.appendChild(option);
