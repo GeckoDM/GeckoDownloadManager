@@ -25,18 +25,27 @@ const echo360BaseURIs = [
   'echo360.org'
 ]
 
+/**
+ * @description checks if there are any media to download based on medias object and mediaType === "Video"
+ * @param {*} param0
+ * @returns {boolean} 
+ */
 function canDownload({ lesson }) {
-  return lesson.isPast && lesson.hasVideo;
+  if (lesson.medias.length <= 0) {
+    return false;
+  }
+
+  return lesson.medias.some((media) => media.mediaType === "Video")
 }
 
 /**
- * @description retruns the video filename in the following format Year/Month/Data - startTime - EndTime
+ * @description retruns the video filename in the following format Year/Month/Data - startTime - EndTime as it is easier to sort in order
  * @returns {string}
  */
 function getVideoFileName({ lesson }) {
   const dateObj = new Date(lesson.startTimeUTC);
-  const month = dateObj.getUTCMonth() + 1; //months from 1-12
-  const day = dateObj.getUTCDate();
+  const month = ("0" + (dateObj.getUTCMonth() + 1)).slice(-2)//months from 01-12
+  const day = ("0" + dateObj.getUTCDate()).slice(-2);
   const year = dateObj.getUTCFullYear();
 
   const startTimeDateObj = new Date(lesson.lesson.timing.start);
@@ -76,7 +85,7 @@ async function getCourseName(courseSectionId) {
  * @description // Now perform the request again ourselves and download files.
  * @returns {Promise<object>}
  */
-async function getMediaData({url}) {
+async function getMediaData({ url }) {
   const getMediaLessonsRequest = new Request(url, { method: 'GET', credentials: 'include' });
   const getMediaLessonsResponse = await fetch(getMediaLessonsRequest);
   return getMediaLessonsResponse.json();
@@ -88,7 +97,7 @@ async function webRequestOnComplete(xhrRequest) {
   _gaq.push(['_trackEvent', 'webReqFunc', 'loaded']);
   if (mediaLessons === undefined) {
     mediaLessons = xhrRequest;
-    
+
     const getMediaLessonsJson = await getMediaData(mediaLessons);
     const courseSectionId = getMediaLessonsJson.data[0].lesson.lesson.sectionId;
     courseName = await getCourseName(courseSectionId);
