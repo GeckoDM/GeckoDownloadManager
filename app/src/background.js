@@ -1,12 +1,20 @@
 async function getDownloadLink({lessonID, lessonName}, echo360Domain, downloadHD) {
-  const regex = /(?:\(\")(?:.*)(?:\"\))/;
+  const classroomAppRegex = new RegExp('(classroomApp)');
+  const dataRegex = /(?:\(\")(?:.*)(?:\"\))/;
   const lessonHTMLPageRequest = new Request(`${echo360Domain}/lesson/${lessonID}/classroom`, { method: 'GET', credentials: 'include' });
   const lessonHTMLPageResponse = await fetch(lessonHTMLPageRequest)
   const lessonHTMLPageText = await lessonHTMLPageResponse.text();
   const dummyEl = document.createElement('html')
   dummyEl.innerHTML = lessonHTMLPageText;
+  const videoDataScript = Array.from(dummyEl.getElementsByTagName('script')).filter((script) => classroomAppRegex.test(script.innerText));
 
-  const videoDataString = dummyEl.getElementsByTagName('script')[11].innerText.match(regex)[0]
+  if (videoDataScript.length === 0)
+  {
+    return null;
+  }
+
+  const videoDataString = videoDataScript[0].innerText.match(dataRegex)[0];
+  
   const cleanString = videoDataString.substring(1, videoDataString.length - 1);
   const videoDataObject = JSON.parse(JSON.parse(cleanString));
 
