@@ -38,32 +38,9 @@ function canDownload({ lesson }) {
   return lesson.medias.some((media) => media.mediaType === "Video")
 }
 
-/**
- * @description retruns the video filename in the following format Year/Month/Data - startTime - EndTime as it is easier to sort in order
- * @returns {string}
- */
-function getVideoFileName({ lesson }) {
-  const dateObj = new Date(lesson.startTimeUTC);
-  const month = ("0" + (dateObj.getUTCMonth() + 1)).slice(-2)//months from 01-12
-  const day = ("0" + dateObj.getUTCDate()).slice(-2);
-  const year = dateObj.getUTCFullYear();
-
-  const startTimeDateObj = new Date(lesson.lesson.timing.start);
-  const startTime = startTimeDateObj.toLocaleTimeString(navigator.language, {
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-
-
-  const endTimeDateObj = new Date(lesson.lesson.timing.end);
-  const endTime = endTimeDateObj.toLocaleTimeString(navigator.language, {
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-
-  const name = year + "-" + month + "-" + day + ' ' + startTime + '-' + endTime;
-
-  return name.replaceAll(':', '\ua789');
+function getVideoFileName({lesson}) {
+  const {updatedAt} = lesson.lesson;
+  return updatedAt.slice(0, updatedAt.indexOf("T"));
 }
 
 /**
