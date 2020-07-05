@@ -18,6 +18,7 @@ _gaq.push(['_trackPageview']);
   ga.src = 'https://ssl.google-analytics.com/ga.js';
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
+
 const echo360BaseURIs = [
   'echo360.org.au',
   'echo360.org.uk',
@@ -28,28 +29,57 @@ function canDownload({ lesson }) {
   return lesson.isPast && lesson.hasVideo;
 }
 
+/**
+ * @description retruns the video filename in the following format Year/Month/Data - startTime - EndTime
+ * @returns {string}
+ */
 function getVideoFileName({ lesson }) {
   const dateObj = new Date(lesson.startTimeUTC);
   const month = dateObj.getUTCMonth() + 1; //months from 1-12
   const day = dateObj.getUTCDate();
   const year = dateObj.getUTCFullYear();
-  
+
   const startTimeDateObj = new Date(lesson.lesson.timing.start);
   const startTime = startTimeDateObj.toLocaleTimeString(navigator.language, {
     hour: '2-digit',
-    minute:'2-digit'
+    minute: '2-digit'
   });
 
 
   const endTimeDateObj = new Date(lesson.lesson.timing.end);
   const endTime = endTimeDateObj.toLocaleTimeString(navigator.language, {
     hour: '2-digit',
-    minute:'2-digit'
+    minute: '2-digit'
   });
 
   const name = year + "-" + month + "-" + day + ' ' + startTime + '-' + endTime;
 
   return name.replaceAll(':', '\ua789');
+}
+
+/**
+ * @description Gets the course name for the current course page
+ * @param {string} courseSectionId - The course Id which represents the current course
+ * @returns {Promise<string>} The course name 
+ */
+async function getCourseName(courseSectionId) {
+  const courseDataRequest = new Request(`${echo360Domain}/user/enrollments`, { method: 'GET', credentials: 'include' });
+  const courseDataResponse = await fetch(courseDataRequest);
+  const courseDataJson = await courseDataResponse.json();
+
+  const courseMatch = courseDataJson.data[0].userSections.find((userSection) => userSection.sectionId === courseSectionId)
+
+  return courseMatch.courseName.replace(/[/\\?%*:|"<>]/g, ' ')
+}
+
+/**
+ * @description // Now perform the request again ourselves and download files.
+ * @returns {Promise<object>}
+ */
+async function getMediaData({url}) {
+  const getMediaLessonsRequest = new Request(url, { method: 'GET', credentials: 'include' });
+  const getMediaLessonsResponse = await fetch(getMediaLessonsRequest);
+  return getMediaLessonsResponse.json();
 }
 
 // Job of this function is to listen init mediaLessons once per click.
@@ -58,17 +88,10 @@ async function webRequestOnComplete(xhrRequest) {
   _gaq.push(['_trackEvent', 'webReqFunc', 'loaded']);
   if (mediaLessons === undefined) {
     mediaLessons = xhrRequest;
-    // Now perform the request again ourselves and download files.
-    const getMediaLessonsRequest = new Request(mediaLessons.url, { method: 'GET', credentials: 'include' });
-    const getMediaLessonsResponse = await fetch(getMediaLessonsRequest);
-    const getMediaLessonsJson = await getMediaLessonsResponse.json();
-
-    const courseDataRequest = new Request('https://echo360.org.uk/user/enrollments', { method: 'GET', credentials: 'include' });
-    const courseDataResponse = await fetch(courseDataRequest);
-    const courseDataJson = await courseDataResponse.json();
-
-    const courseMatch = courseDataJson.data[0].userSections.find((userSection) => userSection.sectionId === getMediaLessonsJson.data[0].lesson.lesson.sectionId)    
-    courseName = courseMatch.courseName.replace(/[/\\?%*:|"<>]/g, ' ')
+    
+    const getMediaLessonsJson = await getMediaData(mediaLessons);
+    const courseSectionId = getMediaLessonsJson.data[0].lesson.lesson.sectionId;
+    courseName = await getCourseName(courseSectionId);
 
     console.log(getMediaLessonsJson);
     downloadables = getMediaLessonsJson.data.filter((dataItem) => {
@@ -103,13 +126,15 @@ function pageSetup() {
   chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
     var currentTab = tabs[0].url;
     console.log(currentTab);
-    var domain = currentTab.match(/^[\w-]+:\/{2,}\[?([\w\.:-]+)\]?(?::[0-9]*)?/)[1];
-    if (echo360BaseURIs.indexOf(domain) === -1) {
+    const domainOrigin = new URL(tabs[0].url).origin;
+    const domainHostName = new URL(tabs[0].url).hostname;
+    debugger;
+    if (echo360BaseURIs.indexOf(domainHostName) === -1) {
       document.getElementById("load").setAttribute("disabled", true);
       document.getElementById("downloadHD").setAttribute("disabled", true);
       document.getElementById("mainBlock").setAttribute("hidden", true);
       document.getElementById("invalidMsg").removeAttribute("hidden")
-      echo360Domain = domain;
+      echo360Domain = domainOrigin;
     }
   });
   // Use default value color = 'red' and likesColor = true.
@@ -123,7 +148,6 @@ function pageSetup() {
 document.addEventListener('DOMContentLoaded', function () {
   // Add load button onclick. To refresh page to populate
   var loadButton = document.getElementById('load');
-  let echo360Domain;
   pageSetup()
 
   loadButton.addEventListener('click', function () {
@@ -157,8 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const toDownload = [];
     options.forEach((option, i) => {
-      if (option.selected)
-      {
+      if (option.selected) {
         toDownload.push({
           lessonID: downloadables[i].lesson.lesson.id,
           lessonName: getVideoFileName(downloadables[i]),
@@ -169,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // link to background.js
     const port = chrome.runtime.connect();
 
-    port.postMessage({toDownload, echo360Domain, downloadHD, courseName});
+    port.postMessage({ toDownload, echo360Domain, downloadHD, courseName });
     downloadButton.disabled = true;
     $("#lectureSelect").empty();
     mediaLessons = undefined;
