@@ -30,7 +30,7 @@ const echo360BaseURIs = [
  * @param {*} param0
  * @returns {boolean} 
  */
-function canDownload({ lesson }) {
+function canDownload(lesson) {
   if (lesson.medias.length <= 0) {
     return false;
   }
@@ -38,8 +38,8 @@ function canDownload({ lesson }) {
   return lesson.medias.some((media) => media.mediaType === "Video")
 }
 
-function getVideoFileName({lesson}) {
-  const {updatedAt} = lesson.lesson;
+function getVideoFileName(lesson) {
+  const { updatedAt } = lesson.lesson;
   return updatedAt.slice(0, updatedAt.indexOf("T"));
 }
 
@@ -55,7 +55,7 @@ async function getCourseName(courseSectionId) {
 
   const courseMatch = courseDataJson.data[0].userSections.find((userSection) => userSection.sectionId === courseSectionId)
 
-  return courseMatch.courseName.replace(/[/\\?%*:|"<>]/g, ' ')
+  return courseMatch ? courseMatch.courseName.replace(/[/\\?%*:|"<>]/g, ' ') : 'unknown course';
 }
 
 /**
@@ -68,6 +68,20 @@ async function getMediaData({ url }) {
   return getMediaLessonsResponse.json();
 }
 
+function getLessons(mediaLessonsJson) {
+  const lessons = [];
+  mediaLessonsJson.data.forEach((mediaLessonData) => {
+    if (mediaLessonData.lessons) {
+      mediaLessonData.lessons.forEach((lesson) => lessons.push(lesson.lesson));
+    }
+    else {
+      lessons.push(mediaLessonData.lesson);
+    }
+  })
+
+  return lessons;
+}
+
 // Job of this function is to listen init mediaLessons once per click.
 async function webRequestOnComplete(xhrRequest) {
   console.log("Media Lessons obtained!");
@@ -76,11 +90,12 @@ async function webRequestOnComplete(xhrRequest) {
     mediaLessons = xhrRequest;
 
     const getMediaLessonsJson = await getMediaData(mediaLessons);
-    const courseSectionId = getMediaLessonsJson.data[0].lesson.lesson.sectionId;
+    const lessons = getLessons(getMediaLessonsJson);
+    const courseSectionId = lessons[0].lesson.sectionId;
     courseName = await getCourseName(courseSectionId);
 
     console.log(getMediaLessonsJson);
-    downloadables = getMediaLessonsJson.data.filter((dataItem) => {
+    downloadables = lessons.filter((dataItem) => {
       return canDownload(dataItem);
     });
 
@@ -169,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
     options.forEach((option, i) => {
       if (option.selected) {
         toDownload.push({
-          lessonID: downloadables[i].lesson.lesson.id,
+          lessonID: downloadables[i].lesson.id,
           lessonName: getVideoFileName(downloadables[i]),
         })
       }
