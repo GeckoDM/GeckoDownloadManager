@@ -1,41 +1,62 @@
 async function getDownloadLink({lessonID, lessonName}, echo360Domain, downloadHD) {
-  const regex = /(?:\(\")(?:.*)(?:\"\))/;
+  const classroomAppRegex = new RegExp('(classroomApp)');
+  const dataRegex = /(?:\(\")(?:.*)(?:\"\))/;
   const lessonHTMLPageRequest = new Request(`${echo360Domain}/lesson/${lessonID}/classroom`, { method: 'GET', credentials: 'include' });
   const lessonHTMLPageResponse = await fetch(lessonHTMLPageRequest)
   const lessonHTMLPageText = await lessonHTMLPageResponse.text();
   const dummyEl = document.createElement('html')
   dummyEl.innerHTML = lessonHTMLPageText;
+  const videoDataScript = Array.from(dummyEl.getElementsByTagName('script')).filter((script) => classroomAppRegex.test(script.innerText));
 
-  const videoDataString = dummyEl.getElementsByTagName('script')[11].innerText.match(regex)[0]
-  const cleanString = videoDataString.substring(1, videoDataString.length - 1);
-  const videoDataObject = JSON.parse(JSON.parse(cleanString));
-
-  let totalSoruces = 0;
-
-  if (!videoDataObject.video) {
+  if (videoDataScript.length === 0)
+  {
     return null;
   }
 
-  videoDataObject.video.playableMedias.forEach((media) => {
-    if (media.sourceIndex > totalSoruces) {
-      totalSoruces = media.sourceIndex;
-    }
+  const videoDataString = videoDataScript[0].innerText.match(dataRegex)[0];
+  
+  const cleanString = videoDataString.substring(1, videoDataString.length - 1);
+  const videoDataObject = JSON.parse(JSON.parse(cleanString));
+
+  const videosData =  videoDataObject.video.playableMedias.filter((videoData) => {
+    const includesAudio = videoData.trackType.includes('Audio') 
+    const includesVideo = videoData.trackType.includes('Video')
+    const wantedQuality = downloadHD ? videoData.quality.includes(1) : videoData.quality.includes(0)
+    return includesAudio && includesVideo && wantedQuality;
   })
 
-  const downloadArray = [];
-  for (let i = 1; i <= totalSoruces; i++) {
-    const quality = downloadHD ? `hd${i}.mp4` : `sd${i}.mp4`;
-    const videoName = `video_source_${i}_${quality}`
-    const templateUrl = new URL(videoDataObject.video.playableMedias[0].uri);
-    templateUrl.search = '';
-    templateUrl.pathname = templateUrl.pathname.replace(/\/[^\/]*$/, `/${quality}`)
+  if (videosData.length === 0) {
+    return null;
+  }
 
-    downloadArray.push({
+  const downloadArray = videosData.map((videoData) => {
+    const quality = downloadHD ? `hd` : `sd`;
+    const videoName = `video_source_${videoData.sourceIndex}_${quality}.mp4`
+
+    if (videoData.isHls)
+    {
+      // here i am guessing what the url is since hls video are different format
+      const templateUrl = new URL(videoData.uri);
+      templateUrl.search = '';
+      templateUrl.pathname = templateUrl.pathname.replace(/\/[^\/]*$/, `/${quality}${videoData.sourceIndex}.mp4`)
+
+      return {
+        url: templateUrl.href,
+        lessonName,
+        videoName,
+      }
+    }
+
+    const templateUrl = new URL(videoData.uri);
+    templateUrl.search = '';
+
+    return {
       url: templateUrl.href,
       lessonName,
       videoName,
-    });
-  }
+    }
+
+  });
 
   return downloadArray;
 }
