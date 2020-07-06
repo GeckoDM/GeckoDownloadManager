@@ -187,6 +187,8 @@ document.addEventListener('DOMContentLoaded', function () {
           lessonID: downloadables[i].lesson.id,
           lessonName: getVideoFileName(downloadables[i]),
         })
+
+        lectureSelect.removeChild(option);
       }
     });
 
@@ -194,9 +196,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const port = chrome.runtime.connect();
 
     port.postMessage({ toDownload, echo360Domain, downloadHD, courseName });
-    downloadButton.disabled = true;
-    $("#lectureSelect").empty();
-    mediaLessons = undefined;
+
+    if (lectureSelect.options.length === 0)
+    {
+      downloadButton.disabled = true;
+      mediaLessons = undefined;
+    }
 
     return;
   }, false);
