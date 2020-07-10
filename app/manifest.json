@@ -22,6 +22,7 @@
     "webRequest",
     "*://echo360.org.uk/section/",
     "*://echo360.org.au/section/",
+    "*://echo360.org.ca/section/",
     "*://echo360.org/section/",
     "downloads",
     "tabs",
