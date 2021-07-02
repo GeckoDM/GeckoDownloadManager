@@ -21,6 +21,7 @@ _gaq.push(['_trackPageview']);
 
 const echo360BaseURIs = [
   'echo360.org.au',
+  'echo360.net.au',
   'echo360.org.uk',
   'echo360.org',
   'echo360.ca',
