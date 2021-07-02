@@ -3,7 +3,7 @@
 
   "name": "geckoDM",
   "description": "A Download Manager for the Echo360 Lecture System",
-  "version": "0.3.15",
+  "version": "0.3.16",
   "homepage_url": "http://geckodm.github.io/",
   "icons": {
     "16": "drawables/launcher/icon-16.png",
